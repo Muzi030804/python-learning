@@ -1,0 +1,21 @@
+# Python缓存
+__pycache__/
+*.pyc
+
+# 虚拟环境
+.venv/
+venv/
+
+# API密钥
+.env
+
+# IDE配置
+.idea/
+.vscode/
+
+# 测试缓存
+.pytest_cache/
+
+# 运行数据
+*.log
+sessions/
