@@ -10,3 +10,7 @@
 git diff检查
   ↓
 git commit保存
+
+## 快捷键
+
+快速注释  Ctrl+/

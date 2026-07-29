@@ -16,7 +16,7 @@ git add 01_python_basics/variables.py
 # 5. 提交
 git commit -m "learn(p10): practice Python variables"
 
-# 6. 上传
+# 6. 上传Github
 git push
 
 
