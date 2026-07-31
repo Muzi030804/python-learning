@@ -1,49 +1,77 @@
+Git 通常可以理解成 **3 个区**：
+
+| 区域     | 通俗理解               | 当前内容                   |
+| -------- | ---------------------- | -------------------------- |
+| 工作区   | 你正在写作业的桌面     | 文件当前实际内容           |
+| 暂存区   | 准备装进快递箱的内容   | 下一次准备提交的文件版本   |
+| 本地仓库 | 已经封箱保存的历史记录 | 执行 `git commit` 后的提交 |
+
+流程就是：
+
+```
+工作区 → 暂存区 → 本地仓库 → 远程仓库
+       git add  git commit  git push
+```
+
 开始学习前，如果代码已经上传到远程仓库：
 git pull
 学习和练习完成后：
-# 1. 查看哪些文件发生了变化
+
+### 1. 查看哪些文件发生了变化
 git status
 
-# 2. 检查具体改了什么
+### 2. 检查具体改了什么
 ```
-git diff
+git diff  #查看工作区与暂存区的区别
 ```
 
 查看“还没有暂存”的修改。
 
 ```
-git diff --cached
+git diff --cached    #查看暂存区里准备提交的内容
 ```
 
 查看“已经暂存、下次commit将会提交”的内容。
 
 按q退出
 
-# 3. 运行代码，确认没有明显错误
+### 3. 运行代码，确认没有明显错误
 python 01_python_basics/variables.py
 
-# 4. 添加本次完成的文件
-git add 01_python_basics/variables.py
+### 4. 添加本次完成的文件
+```
+git add 01_python_basics/variables.py   #把文件加入暂存区
+```
 
-# 5. 提交
+
+
+### 5. 提交
 git commit -m "learn(p10): practice Python variables"
 
 
 
 commit是将当前在暂存区的文件全部提交，不同用途文件最好分开commit
 
-# 6. 上传Github
+### 6. 上传Github
 git push
 
-## 7.取消当前全部暂存
+### 7.取消当前全部暂存
 
 ```
-git restore --staged .
+git restore --staged .    #从暂存区撤回，但保留代码
+```
+
+### 8.查看历史
+
+```
+git log --oneline
 ```
 
 
 
+#### 尚未暂存以备提交的变更
 
+表示执行 `git add` 后，又继续修改了它。此时暂存区中有未更改的版本,工作区中有当前的版本
 
 
 
