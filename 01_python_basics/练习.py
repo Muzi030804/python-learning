@@ -96,15 +96,168 @@
 # 18
 # 符合条件的数量：5
 # 符合条件的总和：48
-n = int(input("请输入一个正整数:"))
-m = 1
-num = 0
-sum = 0
-while m <= n:
-    if m % 3 ==0 and m % 5 != 0:
-        num += 1
-        sum += m
-        print(m)
-    m += 1
-print(f"符合条件的数量：{num}")
-print(f"符合条件的总和：{sum}")
+# n = int(input("请输入一个正整数:"))
+# m = 1
+# num = 0
+# sum = 0
+# while m <= n:
+#     if m % 3 ==0 and m % 5 != 0:
+#         num += 1
+#         sum += m
+#         print(m)
+#     m += 1
+# print(f"符合条件的数量：{num}")
+# print(f"符合条件的总和：{sum}")
+
+# 给定成绩列表：
+# [58, 60, 73, 45, 90]
+# 使用循环输出所有大于或等于 60 的成绩，最后输出及格人数和及格成绩总和。
+# 预期输出：
+# 60
+# 73
+# 90
+# 及格人数：3
+# 及格成绩总和：223
+# 验收标准：
+# 必须使用列表、for 循环和条件判断。
+# 不能使用内置的 sum()。
+# 60 必须算作及格。
+# 还要分别测试 [60]、[59] 和空列表 []。
+# 只改变列表内容时，统计逻辑不能跟着修改。
+# l = [58,60,73,45,90]
+# total = 0
+# num = 0
+# for x in l:
+#     if x >=60:
+#         num += 1
+#         total += x
+#         print(x)
+# print(f"及格人数为:{num}")
+# print(f"及格成绩总和为:{total}")
+
+#用户输入一句英文，将它转换为小写并按空格拆分。删除重复单词，同时保留单词第一次出现的顺序，最后输出去重后的列表和单词数量。
+# 输入示例：
+# Python is fun and python is useful
+# 预期输出：
+# ['python', 'is', 'fun', 'and', 'useful']
+# 不同单词数量：5
+# s = input("输入一句英文:")
+# new_s = s.lower().split()
+# print(new_s)
+# l = []
+# num = 0
+# for i in new_s:
+#     if i not in l:
+#         num += 1
+#         l.append(i)
+# print(f"去重后的列表为:{l}")
+# print(f"单词数量为:{num}")
+
+# 给定订单元组：
+# (
+#     ("A001", "键盘", 2, 199),
+#     ("A002", "鼠标", 3, 89),
+#     ("A003", "显示器", 1, 1299)
+# )
+# 每条订单依次表示：订单号、商品名、数量、单价。遍历订单，输出每条订单的小计，最后输出全部订单总额。
+# 预期输出：
+# A001 键盘 小计：398
+# A002 鼠标 小计：267
+# A003 显示器 小计：1299
+# 订单总额：1964
+# 验收标准：
+# 订单数据必须保持为元组且不能修改。
+# 遍历时使用元组解包取得四个字段。
+# 每条订单的小计必须由数量和单价计算，不能直接填写结果。
+# 空元组应输出订单总额 0。
+# 改变数量或单价后，统计逻辑不需要修改。
+# t = (
+#     ("A001", "键盘", 2, 199),
+#     ("A002", "鼠标", 3, 89),
+#     ("A003", "显示器", 1, 1299)
+# )
+# total = 0
+#
+# for i in t:
+#     print(f"{i[0]} \t {i[1]} \t 小计:{i[2]*i[3]}")
+#     total += i[2]*i[3]
+#
+# print(f"订单总额：{total}")
+# #解包,不依赖索引
+# orders = (
+#     ("A001", "键盘", 2, 199),
+#     ("A002", "鼠标", 3, 89),
+#     ("A003", "显示器", 1, 1299)
+# )
+#
+# total = 0
+#
+# for order_id, product_name, quantity, unit_price in orders:
+#     subtotal = quantity * unit_price
+#     print(f"{order_id}\t{product_name}\t小计：{subtotal}")
+#     total += subtotal
+#
+# print(f"订单总额：{total}")
+
+# i = input()
+# s = ["1","2","3","4","5"]
+# if i not in s:
+#     print("i无效")
+
+#给定列表：
+# ["python", "agent", "python", "rag", "agent", "python"]
+# # 统计每个单词出现的次数，并保存到一个字典中。
+# # 预期结果：
+# # {"python": 3, "agent": 2, "rag": 1}
+# # 验收标准：
+# # 必须通过循环逐个处理列表元素。
+# # 必须使用字典保存“单词—次数”。
+# # 不能使用 list.count() 或 collections.Counter。
+# # 不能修改原列表。
+# # 输入空列表时应得到空字典。
+# # 列表中增加任何新单词后，统计逻辑不需要修改。
+# dict1 = {1: {"ch": 2,"ma":4}, 2: {"ch": 2,"ma":25}, 3: {"ch": 3,"ma":55}}
+#
+# print(dict1)
+# print(dict1.keys())
+# print(dict1.values())
+# print(dict1.items())
+# l = []
+# for key,value in dict1.items():
+#     l.append(value["ch"])
+# print(l)
+# print(dict1[1].values())
+
+# l = [5,4,2,1,1,9,10]
+# print(l.index(max(l)))
+# print(max(l))
+
+#给定嵌套字典：
+# {
+#     "键盘": {"price": 199, "stock": 5},
+#     "鼠标": {"price": 89, "stock": 0},
+#     "显示器": {"price": 1299, "stock": 2}
+# }
+# 输出每种商品的库存金额，并计算全部库存总额。
+# 预期输出：
+# 键盘 库存金额：995
+# 鼠标 库存金额：0
+# 显示器 库存金额：2598
+# 全部库存总额：3593
+# 验收标准：
+# 使用 items() 解包遍历商品名称和商品信息。
+# 只能使用一层循环。
+# 商品名称必须与同一条记录中的价格、库存对应。
+# 库存金额必须动态计算。
+# 空字典应输出全部库存总额 0。
+# 增删商品后不需要修改统计逻辑。
+shopping = {
+    "键盘": {"price": 199, "stock": 5},
+    "鼠标": {"price": 89, "stock": 0},
+    "显示器": {"price": 1299, "stock": 2}
+}
+total = 0
+for name, shop in shopping.items():
+    print(f"{name}, 库存金额:{shop["price"] * shop["stock"]}")
+    total += shop["price"]* shop["stock"]
+print("全部库存总额：",total)
