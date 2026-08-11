@@ -23,6 +23,11 @@ git commit保存
 
 列选择模式  Alt + Shift + Insert
 
+跳到下一个匹配的符号	Tab	按Tab后光标会移动到}后
+![image-20260807154238807](../assets/images/image-20260807154238807.png)
+
+删除整行 Ctrl+Y
+
 ## 9—35：Python基础语法
 
 基础数据类型：int,float,bool,str,NoneType
@@ -461,6 +466,7 @@ print(l)
 # reverse()  反转列表元素  s.reserve()
 # sum()      求和         sum(s)
 # len()      数组中多少元素    len(s)
+# index()	 返回该元素的第一个索引  s.index(5)
 s = [11, 2, 31, 4, -5, 15, 17, 28]
 print(s)    #[11, 2, 31, 4, -5, 15, 17, 28]
 s.append(10)
@@ -1312,3 +1318,509 @@ while True:
         case _:
             print("输入无效，请输入1~7")
 ```
+
+## 57—76：函数、模块、类型注解
+
+### 函数定义与调用
+
+```python
+#def 函数名(参数列表):
+#   函数体
+#   ......
+#   return 返回值          (可以没有返回值)
+
+#调用函数       先定义再调用
+#函数名(参数)
+
+def out_line():
+    print('--------------')
+
+out_line()
+```
+
+### 参数与返回值
+
+返回值可以有多个,会封装到元组中,可以用解包来分别获取
+
+```python
+#计算圆的面积
+def circle_area(radius):
+    return 3.14 * radius**2
+
+c_area = circle_area(5)
+print(c_area)
+
+#计算长方形的面积
+def rectangle(width, height):   #形参:函数定义时括号里的参数,只能在函数内使用(局部变量)
+    return width * height
+
+r_area = rectangle(5, 6)    #实参:函数在调用时输入的参数
+print(r_area)
+
+#计算圆的面积和周长
+def circle_area_length(radius): #如果返回值有多个,多个返回值之间逗号分隔
+    return round(3.14 * radius**2,1),round(2*3.14*radius,1)         #round(a,b):  让a保留b位小数
+circle_area_len = circle_area_length(5)
+print(circle_area_len)      #(78.5, 31.4)  多个返回值会封装到元组
+print(type(circle_area_len))    #<class 'tuple'>
+
+#解包
+area, length = circle_area_length(5)
+print(area)         #78.5
+print(length)       #31.4
+```
+
+#### 函数的说明文档
+
+函数的说明文档(Docstring)是写在函数开头,用三个引号包裹的字符串,用于解释函数的功能  参数  返回值等信息,方便调用者清楚函数的具体作用和细节
+
+```python
+def circle_area(radius):
+    """
+    该函数用于根据圆的半径,计算圆的面积和周长
+    :param radius: 圆的半径
+    :return: 圆的面积,圆的周长
+    """
+    return 3.14 * radius * radius,2*3.14*radius
+
+a = circle_area(5)
+print(a)
+```
+
+将光标放在调用的函数上就会出现说明文档
+
+![image-20260807110911831](../assets/images/image-20260807110911831.png)
+
+#### 函数的嵌套调用
+
+嵌套调用值得是在一个函数中,又调用了另外一个函数
+函数调用遵循栈结构,先进后出
+
+```python
+def function_a():
+    print("function_a:first")
+    function_b()
+    print("function_a:last")
+def function_b():
+    print("function_b:first")
+    function_c()
+    print("function_b:last")
+
+def function_c():
+    print("function_c")
+
+function_a()
+#运行结果:
+# function_a:first
+# function_b:first
+# function_c
+# function_b:last
+# function_a:last
+```
+
+### 变量作用域
+
+全局变量:函数之外,整个文件中都可以使用,通常定义在文件顶部
+局部变量:函数内部,只能在函数内部使用
+
+```python
+num = 100
+def circle_area(radius):
+    pi = 3.14
+    area = pi * radius * radius
+    num = 1000              #这是局部变量num,和全局变量num不是同一个num
+    print("num:",num)
+    return area
+print(circle_area(10))		#num: 1000	314.0
+print("num:",num)           #num: 100   这是全局变量num
+```
+
+#### global关键字
+
+作用是在函数中要使用全局变量,使得可以在函数内部修改全局变量的值
+
+注意事项:
+
+不过尽量避免在函数中使用全局变量,因为会使代码难以维护
+
+考虑使用函数参数和返回值来传递数据,而不是依赖全局变量
+
+global主要用在程序的状态,配置,计数器等场景
+
+```python
+num = 1
+def fun1():
+    global num          #声明  使用全局变量num
+    num = 100
+    print("num:",num)
+
+fun1()                  #num: 100
+print("num:",num)       #num: 100
+```
+
+### 参数进阶
+
+#### 传参方式
+
+传参方式:在调用函数时,传递实参的方式
+1.位置参数:调用时根据函数定义时的位置来传递参数    要求调用函数时参数顺序与定义函数时参数顺序完全一致
+
+优点:简洁
+缺点:可读性差 易出错 维护难
+
+场景:参数少(不超过3个),且顺序自然
+
+2.关键字参数:调用函数时以函数定义时形参名称作为关键字,以"键=值"的形式来传递(不要求顺序)
+
+优点:可读性强 易维护和扩展
+缺点:代码繁琐
+
+场景:参数较多,或易混淆的场景
+
+```python
+def reg_stu(name,age,gender,city):
+    print(f"注册成功,姓名:{name},年龄:{age},性别:{gender},城市:{city}")
+    return {"name":name,"age":age,"gender":gender,"city":city}
+
+#位置参数
+stu = reg_stu("小王",23,"男","重庆")
+print(stu)
+#关键字参数
+stu = reg_stu(name="张三",age=18,gender="男",city="北京")
+print(stu)
+#与顺序无关
+stu2 = reg_stu(gender="男",name="李四",city="上海",age=22)
+print(stu2)
+#如果位置参数与关键字参数混用,关键字参数必须在位置参数之后(关键字参数之间,没有顺序要求)
+stu3 = reg_stu("王五",25,city="上海",gender="男")
+print(stu3)
+```
+
+#### 默认参数
+
+默认参数也称为缺省参数,用于在定义函数时,为参数提供默认值,调用函数时,可以不传递有默认值的参数
+
+```python
+def reg_stu(name,age,gender="男",city='北京'): #默认参数必须放在没有默认值的参数列表的后面,一个函数在定义时可以设置多个默认参数
+    print(f"注册成功,姓名:{name},年龄:{age},性别:{gender},城市:{city}")
+    return {"name":name,"age":age,"gender":gender,"city":city}
+#函数调用时,如果默认参数传递了值,则会修改默认的参数值,如果没有传递该参数,则直接使用默认值
+stu = reg_stu("张三",18)
+print(stu)
+stu = reg_stu("李四",22,"男","南京")
+print(stu)
+stu = reg_stu("王五",24,city="南京")
+print(stu)
+```
+
+#### 不定长参数
+
+不定长参数也叫可变参数,用于函数定义及调用时参数个数不确定(0个或多个)的场景()
+类型:     位置传递   ,  关键字传递
+
+不定长参数-位置传递(\*args)  传递的所有匹配的未知参数都会被args变量收集,这些参数会合并封装为一个元组,args是元组类型(注意并不会封装关键字参数)
+\*args只是约定俗成的变量名,并不是关键字,可以使用任何合法的变量名(如\*data)
+
+```python
+def calc_data(*args):
+    min_data = min(args)
+    max_data = max(args)
+    avg_data = sum(args) / len(args)
+    return min_data, max_data, round(avg_data,1)
+data = calc_data(10, 20, 30, 40)
+print(data)
+data = calc_data(100, 200, 300, 400)
+print(data)
+```
+
+不定长参数-关键字传递(\*\*kwargs)      参数是以"键=值"形式传递的关键字参数,这些"键=值"参数都会被kwargs接受,并合并为一个字典类型
+\**kwargs只是约定俗成的变量名,并不是关键字,可以使用任何合法的变量名(如**options)
+
+```python
+def calc_data(*args,**kwargs):
+    min_data = min(args)
+    max_data = max(args)
+    avg_data = sum(args)/len(args)
+
+    if kwargs.get('round') is not None:
+        avg_data = round(avg_data,kwargs.get('round'))
+
+    if kwargs.get('print'):
+        print(min_data,max_data,avg_data)
+
+    return min_data,max_data,avg_data
+
+data = calc_data(100,200,301,round=2,print=True)  #100 301 200.33 round作用是几位小数 print表示是否打印
+print(data)     #(100, 301, 200.33)
+
+data = calc_data(33,32,13,45,35,67)     #无print,因为不满足kwargs.get('print') == True
+print(data)     #(13, 67, 37.5)
+```
+
+### 函数作为参数
+
+普通参数:int,bool,str,list,tuple,set,dict等
+特殊参数:函数
+
+```python
+def add(x, y):
+    return x + y
+def subtract(x, y):
+    return x - y
+def calculate(x,y,oper):        #oper是函数
+    return  oper(x,y)           #函数调用语法
+
+result = calculate(2,3,add)
+print(result)
+result = calculate(2,3,subtract)
+print(result)
+```
+
+### lambda表达式(匿名函数)
+
+匿名函数指的是没有名称的函数,需要通过lambda表达式来声明函数,可以简化简单函数的编写(单行表达式)
+注意:函数逻辑比较简单(单行表达式)且只在一个地方使用时,可以考虑使用匿名函数,简化书写(通常作为高阶函数的参数使用)
+注意:匿名函数中可以返回结果,也可以不返回结果,返回结果是不需要写return,表达式的运行结果就是要返回的结果
+
+```python
+#定义匿名列表
+#lambda 参数列表 : 函数体              没有函数名
+
+#需求1:打印一个分隔线
+# def out_line():
+#     print('------------')
+out_line = lambda : print('-------------')  #匿名函数无法直接调用,所以需要赋值给变量,这个变量是一个函数
+out_line()
+#需求2:计算两数之和
+# def add(x,y):
+#     return x+y
+add = lambda x,y: x+y          #lambda表达式会自动将结果返回,不需要写return
+print(add(3,4))
+
+#需求3:完成如下列表的排序操作,按照每一个元素的字符个数从小到大排序    匿名函数典型应用场景
+data_list = ["C++","C","Python","Java","PHP","Go","JavaScript"]
+data_list.sort(key=lambda item : len(item))         #sort函数中的参数key,表示按什么排序,key是一个函数
+print(data_list)
+```
+
+### 类型注解
+
+类型注解是python中的一种语法特性,用于明确表示变量,函数参数和返回值的数据类型,从而使代码更清晰,更安全,更易维护
+
+```python
+a = 100
+b:int = 100
+names : list[str] = ["A", "B", "C"]         
+phone: set[str | int] = {"15915246633", "15915246634", "15915246635",12222555}
+options:dict[str, int] = {"count":0,"total":0}
+goods: tuple[str,int,int] = ("phone",2333,3)
+```
+
+### 综合练习
+
+定义一个函数,用于根据传入的一批商品信息(商品名,价格,数量),优惠(优惠券,积分抵扣),运费信息计算订单的总金额
+具体规则如下:
+优惠券需要商品金额慢5000才可以使用,且优惠券金额不能超过商品总价
+积分抵扣需要商品总金额满5000才可以使用,100 积分抵扣1元(且抵扣金额部门超过商品总价,积分只能整百抵扣)
+
+```python
+def clac_order_price(*args: tuple[str,float,int],coupon:int =0,score:int=0,freight=0) -> float | int:
+    """
+
+    :param args: 物品信息(商品名,价格,数量)
+    :param coupon: 优惠券
+    :param score: 积分抵扣
+    :param freight: 运费
+    :return: 订单总金额
+    """
+    #商品金额
+    total_price = [goods[1]*goods[2] for goods in args]
+    total_cost = sum(total_price)
+
+    #扣减优惠券
+    if coupon > total_cost:
+        coupon = total_cost
+
+    total_cost = total_cost - coupon
+
+    #扣减积分抵扣
+    discount = score//100
+    if score//100 > total_cost:
+        discount = total_cost
+
+    total_cost = total_cost - discount
+
+    #添加运费
+    total_cost = total_cost + freight
+
+    return total_cost
+print(clac_order_price(('phone',2000,3),('pad',1000,2),coupon=200,score=2000,freight=500))
+print(clac_order_price(('phone',2000,1),('pad',1000,2),freight=100))
+```
+
+## 模块
+
+Python模块(module):一个.py文件就是一个模块,模块是Python程序的基本组织单位.在模块中可以定义变量,函数,类,以及可执行的代码
+
+### 模块导入
+
+|                导入形式                |                代码样例                 |   调用方式    |        调用方式        |
+| :------------------------------------: | :-------------------------------------: | :-----------: | :--------------------: |
+|             import  模块名             |            import  random,os            | 模块名.功能名 | random.randint(10,100) |
+|        import  模块名  as  别名        |         import  random  as  rd          |  别名.功能名  |   rd.randint(10,100)   |
+|      from  模块名  import  功能名      |  from  random  import  randint,choice   |    功能名     |    randint(10,100)     |
+| from  模块名  import  功能名  as  别名 | from  random  import  randint  as  rint |     别名      |      rint(10,100)      |
+|        from  模块名  import  *         |         from  random  import  *         |    功能名     |    randint(10,100)     |
+
+```python
+# 导入模块      调用方式:模块名.功能名
+import random
+print(random.randint(1, 10))
+import random as rnd
+print(rnd.randint(1, 10))
+
+# 导入模块中的功能      调用方式:功能名
+from random import randint
+print(randint(1, 10))
+from random import randint as rnd
+print(rnd(1, 10))
+from random import *
+print(randint(1, 10))
+```
+
+### 自定义模块
+
+每一个Python文件都可以作为一个模块,模块的名字就是文件的名字
+
+_ _ name _ _
+
+_ _ all _ _   :是一个模块级别的特殊变量,用与指定  from  模块名  import  *  时会导入哪些功能
+
+my_func.py:
+
+```python
+__all__ = ['PI','log_separator1',  'log_separator4']
+
+PI = 3.1415926
+
+def log_separator1():
+    print('-'*30)
+
+def log_separator2():
+    print('+'*30)
+
+def log_separator3():
+    print('#'*30)
+
+def log_separator4():
+    print('*'*30)
+
+
+#测试函数
+# __name__:Python中的内置变量,表示的是当前模块的名字(直接运行当前模块,__name__的值为"__main_"),作为模块被导入时,__name__的值就是模块名称
+print(__name__)     #__main__
+#执行当前文件则会执行如下代码,当做模块导入,如下代码不会执行
+if __name__ == '__main__':          #直接输入main会跳出if __name__ == '__main__':
+    log_separator1()
+    log_separator2()
+    log_separator3()
+    log_separator4()
+
+
+
+# log_separator1()
+# log_separator2()
+# log_separator3()
+# log_separator4()
+```
+
+main.py:
+
+```python
+#导入模块
+import my_func      #直接导入会将 log_separator1() log_separator2() log_separator3() log_separator4()也输出,所以需要__name__判断
+
+#使用模块中的功能
+print(my_func.PI)
+my_func.log_separator1()
+my_func.log_separator2()
+my_func.log_separator3()
+my_func.log_separator4()
+
+#导入自定义模块中的功能
+from my_func import log_separator1,PI
+print(PI)
+
+from my_func import *
+print(PI)
+log_separator1()
+# log_separator2() 会报错 因为__all__中没有 log_separator2()
+```
+
+## 包
+
+包:本质就是一个文件夹,该文件夹中可以包含若干Python模块(.py文件),文件夹下还包含了一个_ _ init _ _.py
+作用:模块文件较多时,用来管理多个模块(包的本质也是模块)
+
+### 导入方式
+
+![image-20260810170246229](../assets/images/image-20260810170246229.png)
+
+utils:
+
+​	_ _ init _ _.py:
+
+```python
+#描述包信息
+__version__ = "1.0.0"
+__author__ = "me"
+__all__ = ['my_func','my_var']
+```
+
+​	my_func.py:
+
+```python
+def log_separator1():
+    print('-'*30)
+
+def log_separator2():
+    print('+'*30)
+
+def log_separator3():
+    print('#'*30)
+
+def log_separator4():
+    print('*'*30)
+```
+
+​	my_var.py:
+
+```python
+PI = 3.1415926
+```
+
+10_包.py:
+
+```python
+#导入包的模块
+import utils.my_func
+utils.my_func.log_separator1()
+utils.my_func.log_separator2()
+utils.my_func.log_separator3()
+
+from utils import my_func
+my_func.log_separator1()
+my_func.log_separator2()
+
+#使用from utils import * 导入全部模块时,需要在__init__.py中添加'__all__=[]',空值允许导入的模块列表
+from utils import *
+my_func.log_separator1()
+my_func.log_separator2()
+print(my_var.PI)
+
+#导入模块中的功能
+from utils.my_func import log_separator1
+log_separator1()
+```
+
+注意:若utils和10_包.py不在相同目录下,则导入需要使用绝对路径,假设utils在module_01文件夹中,则导入应为:from  module_01.utils......
