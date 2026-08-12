@@ -11,7 +11,9 @@ git diff检查
   ↓
 git commit保存
 
-## 1—8：环境安装与入门程序
+# python
+
+## 1—8：入门
 
 ### 快捷键
 
@@ -1658,11 +1660,11 @@ print(clac_order_price(('phone',2000,3),('pad',1000,2),coupon=200,score=2000,fre
 print(clac_order_price(('phone',2000,1),('pad',1000,2),freight=100))
 ```
 
-## 模块
+### 模块
 
 Python模块(module):一个.py文件就是一个模块,模块是Python程序的基本组织单位.在模块中可以定义变量,函数,类,以及可执行的代码
 
-### 模块导入
+#### 模块导入
 
 |                导入形式                |                代码样例                 |   调用方式    |        调用方式        |
 | :------------------------------------: | :-------------------------------------: | :-----------: | :--------------------: |
@@ -1688,7 +1690,7 @@ from random import *
 print(randint(1, 10))
 ```
 
-### 自定义模块
+#### 自定义模块
 
 每一个Python文件都可以作为一个模块,模块的名字就是文件的名字
 
@@ -1757,12 +1759,12 @@ log_separator1()
 # log_separator2() 会报错 因为__all__中没有 log_separator2()
 ```
 
-## 包
+### 包
 
 包:本质就是一个文件夹,该文件夹中可以包含若干Python模块(.py文件),文件夹下还包含了一个_ _ init _ _.py
 作用:模块文件较多时,用来管理多个模块(包的本质也是模块)
 
-### 导入方式
+#### 导入方式
 
 ![image-20260810170246229](../assets/images/image-20260810170246229.png)
 
@@ -1824,3 +1826,348 @@ log_separator1()
 ```
 
 注意:若utils和10_包.py不在相同目录下,则导入需要使用绝对路径,假设utils在module_01文件夹中,则导入应为:from  module_01.utils......
+
+## 77—87：面向对象和异常
+
+### 面向对象基础
+
+#### 类与对象
+
+定义类    语法如下:          (不推荐以下动态的为对象添加属性)
+class 类名:
+    pass
+
+创建对象
+对象名 = 类名()
+对象名.属性名1 = 属性值1
+对象名.属性名2 = 属性值2
+说明:类名的命名规范,遵循大驼峰命名法,每个单词的首字母大写,单词之间没有分隔符,比如:UserInfo,UserAccount
+
+#说明:_ _ dict _ _是Python中用户自定义类实例的一个特殊属性,用于以字典形式存储对象的属性
+
+```python
+#定义类(不推荐动态的为对象添加属性)
+class Car:
+    pass
+#创建对象
+car1 = Car()
+#动态的为对象添加属性(不推荐)
+car1.brand = 'BMW'
+car1.name = "X5"
+car1.price = 500000
+print(car1)                 #<__main__.Car object at 0x7f290da9b230>  后面是内存地址,每次运行都会发生变化
+print(car1.__dict__)        #{'brand': 'BMW', 'name': 'X5', 'price': 500000}
+```
+
+定义类  语法如下:         (推荐)
+class 类名:
+    def _ _ init _ _(self,参数列表):
+        self.属性名 = 参数值
+        self.属性名 = 参数值
+创建对象
+对象名 = 类名(参数列表)
+
+说明:定义在类的外面的称之为函数,定义在类中的函数称之为方法
+_ _ init _ _:初始化方法,对象创建后会自动调用,主要用于设置对象的初始状态(设置对象属性)
+self:方法的第一个参数,表示当前创建的实例对象
+
+```python
+#定义类
+class Car:
+    def __init__(self,c_brand,c_name,c_price):
+        self.c_brand = c_brand
+        self.c_name = c_name
+        self.c_price = c_price
+        print("初始化完毕")
+#创建对象
+c1 = Car("BMW",'X5',500000)     #初始化完毕
+print(c1.__dict__)      #{'c_brand': 'BMW', 'c_name': 'X5', 'c_price': 500000}
+print(c1.c_brand)       #BMW
+print(c1)               #<__main__.Car object at 0x7f0cb009b230>
+```
+
+#### 实例方法
+
+定义类
+class 类名:
+    def _ _ init _ _(self,参数列表):
+        self.属性名 = 参数值
+        self.属性名 = 参数值
+    def 方法名(self,形参列表):
+        ...
+    def 方法名(self,形参列表):
+        ...
+创建对象
+对象名 = 类名(参数列表)
+对象名.方法名(实参)
+
+```python
+class Car:
+    def __init__(self,brand,name,price):
+        self.brand = brand
+        self.name = name
+        self.price = price
+
+
+    def running(self):
+        print(f"{self.brand} {self.name}正在行驶...")
+
+    def total_price(self,discount,rate=0.1):
+        """
+        计算提车总费用
+        :param discount: 折扣
+        :param rate: 税率
+        :return: 总费用
+        """
+        total_price = self.price*discount + self.price*rate
+        return total_price
+
+c1 = Car("BWM","X5",500000)
+total1 = c1.total_price(0.9,0.2)
+print(f"提车总价为:{total1:.0f}")       #提车总价为:550000
+c1.running()                #BWM X5正在行驶...
+
+c2 = Car("BWM","X5",500000)
+total2 = c2.total_price(0.9)
+print(f"提车总价为:{total2:.0f}")        #提车总价为:500000
+```
+
+#### 魔法方法
+
+魔法方法是指Python中提供的以双下划线开头和结尾的特殊方法,用于定义类的特殊行为,比如:_ _ init _ _
+魔法方法不需要手动调用,Python会在合适的时机自动调用
+
+| 魔法方法                                          | 描述                                                         |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| _ _ init _ _                                      | 初始化方法                                                   |
+| _ _ str _ _                                       | 字符串表示的方法                                             |
+| _ _ eq _ _                                        | 比较两个对象是否相等(equal)                                  |
+| _ _ lt _ _ , _ _ le _ _ , _ _ gt _ _ , _ _ ge _ _ | 支持比较两个对象的大小(less than),小于等于(less than or equal),大于(greater than),大于等于(greater than or equal) |
+
+```python
+class Car:
+    def __init__(self,brand,name,price):
+        self.brand = brand
+        self.name = name
+        self.price = price
+    def running(self):
+        print(f"{self.brand} {self.name} 正在行驶...")
+    def __str__(self):      #将print(对象)转化为字符串
+        return f"{self.brand} {self.name} {self.price}"
+    def __eq__(self, other):        #两个对象之间使用 == 会自动调用__eq__
+        return self.brand == other.brand and self.name == other.name and self.price == other.price
+    def __lt__(self, other):                ##两个对象之间使用 < 会自动调用__lt__,如果使用 > ,相当于取反,也可以调用
+        return self.price < other.price
+
+c1 = Car("BWM","X5",500000)
+print(c1)       #<__main__.Car object at 0x7f3e39e9b230>    加入__str__后:    BWM X5 500000
+
+c2 = Car("BWM","X5",500001)
+print(c2)       #<__main__.Car object at 0x7f3e39e79f90>    加入__str__后:    BWM X5 500000
+
+print(c1 == c2)     #False  如果直接比较两个对象,会基于对象的内存地址进行比较    加入__eq__后:   False(因为价格不一样)
+print(c1 < c2)      #报错:TypeError: '<' not supported between instances of 'Car' and 'Car'   加入__lt__后:      True
+```
+
+#### 属性
+
+实例属性:实例属性属于每个具体对象的属性,每个对象都是独立的(各个对象特有的数据)
+类属性:雷属性是属于类本身的属性,所有实例共享的(所有对象共享的数据或配置)
+说明:通过实例查找属性时,会先查找实例属性,实例属性不存在时,在查找类属性
+
+```python
+class Car:
+    #类属性(所有实例对象共享)  通过 类名.属性 的方式操作
+    wheel = 4       #轮胎数量
+    tax_rate = 0.1  #购置税
+
+    def __init__(self,brand,name,price):
+        # 实例属性,通过 实例对象.属性 的方式操作
+        self.brand = brand
+        self.name = name
+        self.price = price
+        self.wheel = 2
+
+    def running(self):
+        print(f"{self.brand} {self.name}正在行驶...")
+
+    def total_price(self, discount, rate=0.1):
+        """
+        计算提车总费用
+        :param discount: 折扣
+        :param rate: 税率
+        :return: 总费用
+        """
+        total_price = self.price * discount + self.price * rate
+        return total_price
+
+c1 = Car("BWM", "X5", 500000)
+print(Car.wheel)        #4
+print(c1.wheel)         #2   通过实例查找属性时,会先查找实例属性,实例属性不存在时,在查找类属性
+```
+
+### 异常
+
+异常(也称为bug)就是程序运行过程中出现的错误,它会中断程序的正常执行流程
+作用:
+保证数据,逻辑的正确性,避免程序执行混乱
+在开发阶段,尽量发现更多的问题,尽早解决问题,保障程序正常执行
+
+#出现异常有两种处理方案:
+1.不做处理:整个程序因为一个bug,中断执行
+2.捕获异常:按照我们自己的处理方式,处理完异常,程序继续执行(编写程序是,做好预案,出现异常,按预案处理)
+
+try:
+  可能出现异常的业务代码1
+  可能出现异常的业务代码2
+  ...
+except [异常类型 as 变量名]           #[ ]表示可有可无
+  出现异常时的原
+[finally:
+  不管是否出现异常,都会执行的代码]
+
+```python
+try:
+    print("=============")
+    # print(my_name)                  #运行错误,报错信息: name 'my_name' is not defined
+    # print(1/0)                      #运行错误,报错信息: division by zero
+    print("abc"[10])                    #程序运行出错,错误信息: string index out of range
+    print("=============")
+except NameError as e:              #捕获NameError异常
+    print("运行错误,报错信息:",e)
+except ZeroDivisionError as e:
+    print("运行错误,报错信息:",e)
+except Exception as e:              #捕获所有异常
+    print("程序运行出错,错误信息:",e)
+finally:                            #无论程序是否正常运行,finally代码块中的代码都会正常运行
+    print("释放资源~")
+```
+
+#### 异常的传递
+
+异常传递就是异常在函数调用中层层上报的过程,知道有人处理它,或者程序崩溃
+
+```python
+def func1():
+    print("func1...running...")
+    func2()
+
+def func2():
+    print("func2...running...")
+    func3()
+
+def func3():
+    print("func3...running...")
+    print(my_name)
+
+if __name__ == "__main__":
+    try:
+        func1()
+    except Exception as e:
+        print("程序运行出错,错误信息:",e)
+```
+
+### 综合练习
+
+采用面向对象的编程思想，开发一个购物车管理系统，实现商品信息的添加、修改、删除、查询功能。系统使用自定义对象存储商品数据，通过控制台菜单与用户交互。
+具体功能如下：
+    1. 添加购物车：用户根据提示录入商品名称、以及该商品的价格、数量，保存该商品信息到购物车。
+    2. 修改购物车：要求用户输入要修改的购物车商品名称，然后再提示输入该商品的价格、数量，输入完成后修改该商品信息。
+    3. 删除购物车：要求用户输入要删除的购物车名称，根据名称删除购物车中的商品。
+    4. 查询购物车：将购物车中的商品信息展示出来，格式为："商品名称: xxx, 商品价格: xxx, 商品数量: xxx"。
+    5. 退出购物车
+
+```python
+class Goods:
+    def __init__(self,name,price,num):
+        self.name = name
+        self.price = price
+        self.num = num
+
+    def __str__(self):
+        return f"商品名称:{self.name}  价格:{self.price}  商品数量:{self.num}"
+
+    def update_price(self,price=None,num=None):
+        if price is not None:
+            self.price = price
+        if num  is not None:
+            self.num = num
+class ShoppingCart:
+    def __init__(self):
+        self.shopping_cart_list = []
+
+    #添加购物车
+    def add_shopping_cart(self):
+        name = input("输入添加的商品名称:")
+        for good in self.shopping_cart_list:
+            if good.name == name:
+                print("该学生已存在")
+                return
+        price = float(input("输入价格:"))
+        num = int(input("输入数量:"))
+        self.shopping_cart_list.append(Goods(name,price,num))
+        print("添加完成")
+
+    #修改购物车
+    def update_shopping_cart(self):
+        name = input("输入修改的商品名称:")
+        for good in self.shopping_cart_list:
+            if good.name == name:
+                price = float(input("输入价格:"))
+                num = int(input("输入数量:"))
+                good.update_price(price,num)
+                print("修改完成")
+                return
+        print("该商品不存在")
+
+    #删除购物车
+    def delete_shopping_cart(self):
+        name = input("输入删除的商品名称:")
+        for good in self.shopping_cart_list:
+            if good.name == name:
+                self.shopping_cart_list.remove(good)
+                print("删除完成")
+                return
+        print("该商品不存在")
+
+    #查询购物车
+    def show_shopping_cart(self):
+        for good in self.shopping_cart_list:
+            print(good)
+
+    def run(self):
+
+        while True:
+            print()
+            print("#########################################")
+            print("1.添加信息  2.修改信息  3.删除信息  4.查询信息  5.退出系统 ")
+            print("#########################################")
+            choice = input("选择操作:")
+            try:
+                match choice:
+                    case '1':
+                        self.add_shopping_cart()
+                    case '2':
+                        self.update_shopping_cart()
+                    case '3':
+                        self.delete_shopping_cart()
+                    case '4':
+                        self.show_shopping_cart()
+                    case '5':
+                        print("退出成功")
+                        return
+                    case _:
+                        print("请输入1~5")
+            except Exception as e:
+                print("程序错误,请重新输入")
+
+if __name__ == '__main__':
+    shopping_cart = ShoppingCart()
+    shopping_cart.run()
+```
+
+# AI应用
+
+## 88—99：大模型API
+
+### 模型调用
