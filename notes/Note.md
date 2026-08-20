@@ -1,16 +1,3 @@
-每天要形成的习惯是：
-看视频
-  ↓
-跟着写一遍
-  ↓
-关闭视频独立重写
-  ↓
-运行验证
-  ↓
-git diff检查
-  ↓
-git commit保存
-
 # python
 
 ## 1—8：入门
@@ -29,6 +16,7 @@ git commit保存
 ![image-20260807154238807](../assets/images/image-20260807154238807.png)
 
 删除整行 Ctrl+Y
+往前缩进  Shift+Tab
 
 ## 9—35：Python基础语法
 
@@ -48,6 +36,8 @@ s3 = """
 hello
 world
 """      可以换行，这个要按三次双引号
+
+if prompt:  #字符串会自动转换为bool值,如果非空就为True
 
 
 
@@ -159,6 +149,10 @@ if（条件）：             #注意冒号
 判断一个元素是否存在于列表:  元素   (not)  in   列表      
 
 返回结果为bool值,True表示存在(不存在),False表示不存在(存在)
+
+```python
+if prompt:  #字符串会自动转换为bool值,如果非空就为True
+```
 
 ```python
 #案例  完成登录功能（正确账号密码为1888/666888）
@@ -464,7 +458,8 @@ print(l)
 # insert()   在指定索引前,插入该元素  s.insert(0,92)
 # remove()   移除列表中第一个匹配到的值  s.remove(75)
 # pop()      删除列表中指定索引位置的元素(如果未指引,默认最后一个)  s.pop(2)/s.pop()
-# sort()     对列表元素进行排序(列表元素的数据类型一致,才可以进行排序)  s.sort()
+# sort()     对列表元素进行排序(列表元素的数据类型一致,才可以进行排序)  s.sort()		注意返回值是None,所以不能 t = s.sort(),这样t是None
+# sorted()	 返回排序后的新列表    s_list = sorted(s)
 # reverse()  反转列表元素  s.reserve()
 # sum()      求和         sum(s)
 # len()      数组中多少元素    len(s)
@@ -600,7 +595,10 @@ print(s[-1:-5:-1])
 #replace()  将字符串的指定子串替换为新的子串    s.replace('H','C')
 #startswith()  检查字符串是否以指定子串开头,返回bool值   s.startswith('P')
 #endswith()     检查字符串是否以指定子串结尾,返回bool值   s.endswith('P')
-
+#sorted()	 返回排序后的新列表,注意会将字符串拆分为列表    sorted(s)
+#ord()		把一个字符转换成对应的 Unicode 编码整数	ord('a')   a是97
+#chr()		把整数转换成对应的字符					  chr(97)    输出是a
+#enumerate() 可以同时得到：字符的下标和字符本身	for i,c in enumerate(s): 此时的i是字符下标,c是字符 
 print(s.find('hello')) #0
 print(s.count('l'))  #3
 up_str = s.upper()
@@ -618,6 +616,10 @@ sss = s.replace('l','e')
 print(sss)          #heeeo-wored
 print(s.startswith('h'))    #True
 print(s.endswith('e'))      #False
+print(ord('a'))		#97
+s = "abd"
+for i,c in enumerate(s):
+    print(i,c)		#0 a    1 b    2 d
 
 print(s)   #hello-world   字符串不会变
 ```
@@ -1048,6 +1050,7 @@ print(dict1["a"])       #100   可以修改
 | 查询 |     字典名称.keys()     |               获取所有的key                |     dict1.keys()     |
 | 查询 |    字典名称.values()    |              获取所有的value               |    dict1.values()    |
 | 查询 |    字典名称.items()     |         获取所有的key-value键值对          |    dict1.items()     |
+| 排序 |    sorted(字典名称)     |             取得字典的键并排序             |    sorted(dict1)     |
 
 ```python
 dict1 = {"a": 1, "b": 2, "c": 3, "d": 4}
@@ -1055,9 +1058,9 @@ dict1 = {"a": 1, "b": 2, "c": 3, "d": 4}
 print(dict1.get("c"))       #3
 print(dict1["c"])           #3
 
-print(dict1.keys())         #dict_keys(['a', 'b', 'c', 'd'])
-print(dict1.values())       #dict_values([1, 2, 3, 4])
-print(dict1.items())        #dict_items([('a', 1), ('b', 2), ('c', 3), ('d', 4)])
+print(dict1.keys())         #dict_keys(['a', 'b', 'c', 'd'])  列表
+print(dict1.values())       #dict_values([1, 2, 3, 4])  ;列表
+print(dict1.items())        #dict_items([('a', 1), ('b', 2), ('c', 3), ('d', 4)])  列表,里面是元组
 
 #删除
 num = dict1.pop("c")        #有返回值
@@ -1074,6 +1077,9 @@ for item in dict1.items():          #item是元组('a', 1)    ('b', 2)
     print(f"{item[0]}: {item[1]}")  #a: 1  (中间换行) b: 2
 for k, v in dict1.items():          #解包然后遍历
     print(f"{k}: {v}")              #a: 1  (中间换行) b: 2
+#排序
+for session_name in sorted(session_dict,reverse=True):
+    print(f"{session_name} 消息数: {session_dict[session_name]}")
 ```
 
 案例
@@ -2170,4 +2176,730 @@ if __name__ == '__main__':
 
 ## 88—99：大模型API
 
+### http协议:Hyper  Text  Transfer  Protocol
+
+http:超文本传输协议,规定了客户端和服务器之间数据传输的规则.(只有在请求及响应中都遵循了统一的规则,服务端才能读懂客户端发送来的请求,客户端才能解析服务端响应的结果)
+
+http协议中请求及响应数据的数据格式:
+
+​	请求格式:请求行(请求方式,资源路径),请求头(key:value),请求体(post方式)
+
+​	响应格式:响应行(状态码),响应头(key:value),响应体
+请求方式:
+​	GET:请求参数在请求行中,没有请求体.如:translate.google.hk/?sl=auto&tl=zh-CN&text=log_separator&op=translate(?之后的是参数,参数之间用&连接). GET请求请求参数大小在浏览器中是有限制的
+​	POST:请求参数在请求体中,POST请求大小是没有限制的(所以调用API时用POST)
+
+请求数据格式:
+![image-20260813141503933](/home/unitree/.config/Typora/typora-user-images/image-20260813141503933.png)
+
+响应数据格式:
+
+![image-20260813140533018](/home/unitree/.config/Typora/typora-user-images/image-20260813140533018.png)
+
+### Apifox
+
+Apifox是一款API设计,开发,测试的一体化协作平台,是项目开发中进行API接口测试的工具
+
+### JSON
+
+JSON(JavaScript  Object  Notation)是前端的一种对象表示方法.  表示形式类似于Python中的字典,都是key:value这种形式,不过所有的key都必须使用双引号,值可以是任何类型:
+	对象:用{}表示,{}之间是键值对形式,键是字符串,值可以是任意其他类型
+	数字:整数和小数都是数字,例如12,3.14
+
+​	字符串:用" "引起来,例如"jack"
+
+​	布尔:有两种值:    true或false(注意是小写)
+
+​	列表:用[ ]表示,[ ]中是列表的元素,多个元素以,分割
+
+例如下面的模型调用
+
 ### 模型调用
+
+#### curl调用API
+
+调用deepseek 的curl:
+
+```json
+	  {
+        "model": "deepseek-v4-pro",
+        "messages": [
+          {"role": "system", "content": "你是AI助理,你叫小鲸鱼."},
+          {"role": "user", "content": "你是谁"}
+        ],
+        "thinking": {"type": "enabled"},
+        "reasoning_effort": "high",
+        "stream": false
+      }
+```
+
+"role": "system"  表示当前设定的是大模型,"content"中是具体的AI设定和行为准则
+"role": "user"       表示用户,"content"中是用户实际提出的问题或指令
+
+"stream": false    表示非流式输出,改为true即可让模型一个字一个字的输出
+
+```json
+{
+    "id": "63602cff-9f2e-43b0-b289-4c3472575045",
+    "object": "chat.completion",
+    "created": 1786603853,
+    "model": "deepseek-v4-pro",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "你好呀！我是小鲸鱼，你的AI助理，很高兴认识你！有什么我可以帮你的吗？😊",
+                "reasoning_content": "嗯，用户问了一个很简单的自我介绍问题“你是谁”。\n\n这是一个非常基础的身份询问，不需要复杂拆解。用户可能是第一次接触，想确认我的身份和功能。\n\n我需要给出一个清晰、友好、简洁的自我介绍，说明我的名字和基本定位，并表达乐于帮助的态度。想到了直接告知名字“小鲸鱼”，并说明是AI助理，可以随时提供帮助。\n\n可以用轻松亲切的语气来回应，让用户感到友好。"
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "prompt_tokens": 93,
+        "completion_tokens": 116,
+        "total_tokens": 209,
+        "prompt_tokens_details": {
+            "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+            "reasoning_tokens": 91
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 93
+    },
+    "system_fingerprint": "fp_v4pro_20260812_prod0820_fp8_kvcache_20260402"
+}
+```
+
+"role": "assistant"    表示这部分是由大模型响应回来的,"content"表示响应回来的内容
+
+"usage"     token用量
+
+#### 本地模型调用
+
+输入:
+
+```json
+{
+        "model": "qwen2.5:3b",
+        "messages": [
+          {"role": "system", "content": "你是AI助理,你叫小鲸鱼"},
+          {"role": "user", "content": "12个苹果,3个人,怎么均分"}
+        ],
+        
+        "thinking": {"type": "disabled"},
+        "reasoning_effort": "high",
+        "stream": false
+      }
+```
+
+输出:
+
+```json
+{
+    "model": "qwen2.5:3b",
+    "created_at": "2026-08-13T08:20:09.936699409Z",
+    "message": {
+        "role": "assistant",
+        "content": "要将12个苹果平均分配给3个人，我们可以这样操作：\n\n每人都可以得到：\\[ 12 \\div 3 = 4 \\]\n\n所以，每个人都可以得到4个苹果。"
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 3698976471,
+    "load_duration": 2164044975,
+    "prompt_eval_count": 33,
+    "prompt_eval_duration": 160480000,
+    "eval_count": 44,
+    "eval_duration": 1372294000
+}
+```
+
+
+
+#### 会话记忆--处理方案(会话历史滚雪球)
+
+因为每次调用大模型不会记得之前的内容,所以可以把大模型回答的内容作为提示词输入
+
+输入:
+
+```json
+"messages": [
+          {"role": "system", "content": "你是AI助理,你叫小鲸鱼"},
+          {"role": "user", "content": "12个苹果,3个人,怎么均分"}
+        ]
+```
+
+输出:
+
+```json
+"messages": [
+{"role": "assistant","content": "要均分12个苹果给3个人，直接计算：\n\n**12 ÷ 3 = 4**\n\n所以每个人分到 **4个苹果**。  \n如果苹果大小不一样，可以尽量按大小、品种搭配，让三份更公平。"}
+]
+```
+
+输入:
+
+```json
+"messages": [
+          {"role": "system", "content": "你是AI助理,你叫小鲸鱼"},
+          {"role": "user", "content": "12个苹果,3个人,怎么均分"},
+          {"role": "assistant","content": "要均分12个苹果给3个人，直接计算：\n\n**12 ÷ 3 = 4**\n\n所以每个人分到 **4个苹果**。  \n如果苹果大小不一样，可以尽量按大小、品种搭配，让三份更公平。"},
+          {"role": "user", "content": "2个人呢"}
+        ]
+```
+
+输出:
+
+```json
+"messages": [
+          {"role": "assistant","content": "2个人均分12个苹果：\n\n**12 ÷ 2 = 6**\n\n所以每个人分到 **6个苹果**。"}
+        ]
+```
+
+输入:
+
+```json
+"messages": [
+          {"role": "system", "content": "你是AI助理,你叫小鲸鱼"},
+          {"role": "user", "content": "12个苹果,3个人,怎么均分"},
+          {"role": "assistant","content": "要均分12个苹果给3个人，直接计算：\n\n**12 ÷ 3 = 4**\n\n所以每个人分到 **4个苹果**。  \n如果苹果大小不一样，可以尽量按大小、品种搭配，让三份更公平。"},
+          {"role": "user", "content": "2个人呢"},
+          {"role": "assistant","content": "2个人均分12个苹果：\n\n**12 ÷ 2 = 6**\n\n所以每个人分到 **6个苹果**。"},
+          {"role": "user", "content": "6个人呢"}
+        ]
+```
+
+输出:
+
+```json
+"messages": [
+		  {"role": "assistant","content": "6个人均分12个苹果：\n\n**12 ÷ 6 = 2**\n\n所以每个人分到 **2个苹果**。"}
+		  ]
+```
+
+#### Python调用
+
+PyPI(Python  Package  Index):是由Python官方和社区共同维护的Python第三方软件包的官方仓库
+
+pip:  pip是Python官方提供的Python包的管理工具,提供了对Python包的查找,下载,安装,卸载等功能
+
+```python
+import os
+from openai import OpenAI
+
+#创建与AI大模型交互的客户端对象
+client = OpenAI(api_key=os.environ.get('DEEPSEEK_API_KEY'),base_url="https://api.deepseek.com")  #os.environ拿到系统的环境变量,DEEPSEEK_API_KEY是环境变量的名字,值就是DeepSeek的API key
+
+#与AI大模型进行交互
+response = client.chat.completions.create(
+    model="deepseek-v4-pro",
+    messages=[
+        {"role": "system", "content": "你是AI助理,你叫小鲸鱼"},
+        {"role": "user", "content": "12个苹果,3个人,怎么均分"},
+    ],
+    stream=False,
+    reasoning_effort="high",
+    extra_body={"thinking": {"type": "disabled"}}
+)
+
+#这里的choices[0].message.content参考之前的调用API的完整回复
+print(response.choices[0].message.content)  #每人分 **4个苹果**：12 ÷ 3 = 4。如果苹果大小不一，想分得更公平，可以全部切块或榨成汁再平均分成3份。
+```
+
+### 提示词工程
+
+1.给大模型设定角色与能力
+
+2.明确核心请求与任务
+
+3.按步骤拆解复杂任务
+
+4.指定风格与语气
+
+5.明确要求输出格式
+
+6.提供输入输出的示例
+
+```tex
+
+你是一名经验丰富的历史老师，擅长用生动有趣的讲述化解复杂的历史事件。现在，请完成以下任务：
+1. 核心任务： 向一位高中生解释法国大革命爆发的主要原因。
+2. 表达要求：
+    语气与风格： 使用简洁、口语化、充满课堂热情的语气，避免学术黑话。整体叙事可以借鉴《人类群星闪耀时》中对历史关键时刻的描写手法，富有画面感和戏剧性。
+    内容禁忌： 聚焦于原因分析，不要罗列冗长的日期和事件过程表。
+3. 内容与结构要求：
+   开头： 先用一段话，生动描述革命前法国社会的总体氛围和紧张感（即背景概述）。
+   主体： 分别从政治、经济、思想三个层面阐述直接原因。每个层面提炼2个关键点，并为每个关键点配1个具体、有说服力的史实例子。
+   结尾： 提供一个帮助学生记忆的妙招。
+4. 输出格式： 请严格、完整地按照以下框架组织你的回答：
+【历史现场氛围】
+（在这里写你的背景概述）
+
+【危机根源解析】
+政治层面：
+  - 关键点1：...
+    例子：...
+  - 关键点2：...
+    例子：...
+经济层面：
+  - 关键点1：...
+    例子：...
+  - 关键点2：...
+    例子：...
+思想层面：
+  - 关键点1：...
+    例子：...
+  - 关键点2：...
+    例子：...
+【记忆法宝】
+（请提供一个巧妙的比喻、口诀或联想图像，将这三大层面串联起来，方便学生瞬间记忆）
+```
+
+## 100—119：Streamlit聊天项目
+
+### 项目
+
+Streamlit:开源的Python库,用来快速基于Python代码构建交互式的web网站
+
+Streamlit官方文档:  https://docs.streamlit.io/  里面是各组件的使用方法
+
+运行要使用  streamlit  run  xxx.py
+
+```python
+"""
+会话管理
+"""
+
+import streamlit as st
+import os
+from openai import OpenAI
+from datetime import datetime
+import json
+
+st.set_page_config(
+    page_title="AI助手",
+    page_icon="🧊",
+    #布局
+    layout="wide",
+    #侧边栏
+    initial_sidebar_state="expanded",
+    #右上角菜单
+    menu_items={
+    }
+)
+
+# 保存会话信息函数
+def save_session():
+    if st.session_state.current_session:
+        # 构建新的会话对象
+        session_data = {
+            "nick_name": st.session_state.nick_name,
+            "nature": st.session_state.nature,
+            "current_session": st.session_state.current_session,
+            "message": st.session_state.message
+        }
+
+        # 如果sessions文件不存在,则创建
+        if not os.path.exists("sessions"):
+            os.mkdir("sessions")
+
+        # 保存会话数据
+        with open(f"sessions/{st.session_state.current_session}.json", "w", encoding="utf-8") as f:
+            json.dump(session_data, f, ensure_ascii=False, indent=4)
+
+#生成会话标识(用当前时间表示)
+def generate_session_name():
+    return datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+
+#加载所有会话列表信息
+def load_sessions():
+    session_list = []
+    # 加载sessions目录下的文件  拿到sessions目录下的所有文件,再依次处理单个文件
+    if os.path.exists("sessions"):
+        file_list = os.listdir("sessions")      #file_list里是文件名形成的列表 ,比如 2026-08-17_17-22-48.json
+        for filename in file_list:
+            if filename.endswith(".json"):      #如果是以.json结尾
+                session_list.append(filename[:-5])    #会话列表名称只保留日期,不保留后面的.json,比如2026-08-17_17-22-48,2026-08-17_17-22-48.json倒数第五个字符是.
+    session_list.sort(reverse=True)
+    return session_list
+
+#加载指定会话信息
+def load_session(session_name):
+    try:
+        if os.path.exists(f"sessions/{session_name}.json"):
+            with open(f"sessions/{session_name}.json", "r", encoding="utf-8") as f:
+                session_data = json.load(f)
+                st.session_state.message = session_data["message"]
+                st.session_state.nick_name = session_data["nick_name"]
+                st.session_state.nature = session_data["nature"]
+                st.session_state.current_session = session_name
+    except Exception:
+        st.error("会话加载失败")
+
+# 删除会话信息
+def delete_session(session_name):
+    try:
+        if os.path.exists(f"sessions/{session_name}.json"):
+            os.remove(f"sessions/{session_name}.json")
+            #如果删除的是当前会话,则需要到新页面
+            if session_name == st.session_state.current_session:
+                st.session_state.message = []
+                st.session_state.current_session = generate_session_name()
+    except Exception:
+        st.error("删除会话失败")
+
+#大标题
+st.title("AI助手")
+
+#logo
+st.logo("resources/logo.png")
+
+#系统提示词
+system_prompt = """
+        你是AI助理,你叫%s
+        规则:
+        1.每次只回一条信息
+        2.匹配用户的语言
+        3.回复简短
+        4.用符合风格的方式对话
+    风格:
+        %s
+    必须严格遵守以上规则进行回复
+"""
+
+
+# 初始化聊天信息    定义st.session_state.message用来存储所有的{"role":..,"content":...}信息
+if "message" not in st.session_state:
+    st.session_state.message = []
+# 昵称
+if "nick_name" not in st.session_state:
+    st.session_state.nick_name = "小鲸鱼"
+# 性格
+if "nature" not in st.session_state:
+    st.session_state.nature = "一丝不苟,冷酷无情"
+# 会话标识 (用当前时间表示)
+if "current_session" not in st.session_state:
+    st.session_state.current_session = generate_session_name()
+
+#展示聊天信息
+st.text(f"会话名称{st.session_state.current_session}")
+for message in st.session_state.message:    #{"role": "user", "content": prompt}
+    st.chat_message(message["role"]).write(message["content"])
+    # if message["role"] == "user":
+    #     st.chat_message("user").write(message["content"])
+    # else:
+    #     st.chat_message("assistant").write(message["content"])
+
+# 创建与AI大模型交互的客户端对象
+client = OpenAI(api_key=os.environ.get('DEEPSEEK_API_KEY'),
+                base_url="https://api.deepseek.com")
+
+#侧边栏    with:streamlit中的上下文管理器,创建一个侧边栏,这样之后的代码会自动加上with内容
+
+
+with st.sidebar:
+    #会话信息
+    st.subheader("AI控制面板")
+
+    #新建会话
+    if st.button("新建会话",width="stretch",icon="✏️"):
+        #1.保存当前会话信息
+        save_session()
+
+        #2.创建会话
+        if st.session_state.message:    #如果聊天信息非空,则保存当前对话信息
+            st.session_state.message = []
+            st.session_state.current_session = generate_session_name()
+            save_session()
+            st.rerun() #重新运行当前页面,清除原来渲染的页面
+
+    #会话历史
+    st.text("会话历史")
+    session_list = load_sessions()
+    for session in session_list:
+        col1,col2 = st.columns([4,1])
+        with col1:
+            #加载会话信息
+            if st.button(session,width="stretch",icon="📄",key=f"load_{session}",type="primary" if session == st.session_state.current_session else "secondary"):
+                load_session(session)
+                st.rerun()
+        with col2:
+            #删除会话信息
+            if st.button("",width="stretch",icon="❌️",key=f"delete_{session}"):
+                delete_session(session)
+                st.rerun()
+    # 分隔线
+    st.divider()
+
+    # 助手信息
+    # st.sidebar.subheader("助手信息")   不使用with的情况下
+    # nick_name = st.sidebar.text_input("昵称")
+    st.subheader("助手信息")
+    #昵称输入框
+    nick_name = st.text_input("昵称",placeholder="请输入昵称",value=st.session_state.nick_name)
+    if nick_name:
+        st.session_state.nick_name = nick_name
+    #性格输入框
+    nature = st.text_area("风格",placeholder="请输入风格",value=st.session_state.nature)
+    if nature:
+        st.session_state.nature = nature
+
+#消息输入框
+prompt = st.chat_input("请输入要问的问题")
+if prompt:  #字符串会自动转换为bool值,如果非空就为True
+    st.chat_message("user").write(prompt)
+    #保存有输入的提示词
+    st.session_state.message.append({"role": "user", "content": prompt})
+
+    #调用大模型
+    response = client.chat.completions.create(
+        model="deepseek-v4-pro",
+        messages=[
+            {"role": "system", "content":system_prompt %(st.session_state.nick_name,st.session_state.nature) },
+            # {"role": "user", "content": prompt},
+            # 解包st.session_state.message  把模型输入换为st.session_state.message的内容,st.session_state.message是包含{"role":..,"content":...}的列表
+            *st.session_state.message,
+        ],
+        stream=True,
+        reasoning_effort="high",
+        extra_body={"thinking": {"type": "disabled"}}
+    )
+    #大模型返回的结果(非流式输出的解析方式)   stream=False
+    # st.chat_message("assistant").write(response.choices[0].message.content)
+
+    #大模型返回的结果(流式输出的解析方式)   stream=True
+    response_message = st.empty()   #创建一个空组件,用于展示大模型返回的结果,不然就会瀑布式输出
+
+    full_response = ""
+    for chunk in response:
+        if chunk.choices[0].delta.content is not None:
+            full_response += chunk.choices[0].delta.content
+            response_message.chat_message("assistant").write(full_response)     #原来的空组件实时接收流式输出的结果
+
+    #保存大模型返回的结果
+    # st.session_state.message.append({"role": "assistant", "content": response.choices[0].message.content})
+    st.session_state.message.append({"role": "assistant", "content": full_response})
+
+    #保存会话信息
+    save_session()
+
+```
+
+文件目录下使用streamlit run 05_ai_partner.py来运行
+
+### 文件操作
+
+相对路径:同级目录下open("**./**resources/静夜思.txt","r",encoding="utf-8")中的**./**可以省略,**../**表示上一级目录,**../../**表示上一级的上一目录
+使用绝对路径时要注意   D:\\python\\resources不能直接写,因为\是转义字符,需要在前面加\表示它本来的含义,比如open("D:\\\\python\\\\resources\\\\静夜思.txt","r",encoding="utf-8"),		不过也可以直接D:/python/resources/静夜思.txt
+
+#### 读与写
+
+操作模式:
+a:append,在文件后追加内容;w: write, 覆盖内容;   -------->文件不存在,都会创建文件
+
+操作文件时,基本分为三步:打开,读/写,关闭
+
+```python
+#读文件
+
+#1.打开文件
+f = open("resources/静夜思.txt","r",encoding="utf-8")  #"r"表示读权限
+
+#2.读取文件内容
+content = f.read()      #读取所有内容
+print(content)
+content_list = f.readlines()	#按行读取
+print(content_list)         #['静夜思  [唐] 李白\n', '床前明月光,\n', '疑是地上霜.\n', '举头望明月,\n', '低头思故乡.']
+for line in content_list:
+    print(line.strip())     #因为每一行后面都有\n,所以用strip()
+
+#3.关闭文件
+f.close()
+```
+
+```python
+#写文件
+#1.打开文件
+f = open("resources/春晓.txt","w",encoding="utf-8")   #没有这个文件,那么写操作时会自动创建
+
+#2.写文件
+f.write("春晓  [唐] 孟浩然\n")
+f.write("春眠不觉晓，\n")
+f.write("处处闻啼鸟。\n")
+f.write("夜来风雨声，\n")
+f.write("花落知多少。\n")
+
+#3.关闭文件
+f.close()
+```
+
+#### 资源释放
+
+方法一:使用try,finally
+
+```python
+#1.打开文件
+f = open("resources/春晓.txt","w",encoding="utf-8")   #没有这个文件,那么写操作时会自动创建
+
+#2.写文件  #这样报错了也可以关闭文件
+try:
+    f.write("春晓  [唐] 孟浩然\n")
+    f.write("春眠不觉晓，\n")
+    f.write("处处闻啼鸟。\n")
+    i = 1/0
+    f.write("夜来风雨声，\n")
+    f.write("花落知多少。\n")
+finally:
+#3.关闭文件
+    f.close()
+```
+
+方法二:使用with (推荐方式)
+
+with语句(上下文管理器)的核心作用就是确保资源的总是被正确获取和释放(即使发生异常,也会被正确释放)
+
+```python
+with open("resources/春晓.txt","w",encoding="utf-8") as f:    #返回值赋给f
+    f.write("春晓  [唐] 孟浩然\n")
+    f.write("春眠不觉晓，\n")
+    f.write("处处闻啼鸟。\n")
+    f.write("夜来风雨声，\n")
+    f.write("花落知多少。\n")
+```
+
+### json操作
+
+json.dump():写入
+
+json.load():读取
+
+```python
+import json
+
+#写入json数据文件
+user = {
+    "name" : "张三",
+    "age" : 18,
+    "gender" : "男",
+    "hobbies" : ["reading", "swimming"]
+}
+with open("resources/users.json", "w",encoding="utf-8") as f:
+    #ensure_ascii:默认为True,确保所有的数据输出的数据都是ascii编码(非ASCII码会进行转义);False,非ASCII码保留原样输出
+    #indent:会在输出的json数据中添加缩进(格式化)
+    json.dump(user,f,ensure_ascii=False,indent=4)
+
+#读取json数据文件
+with open("resources/users.json","r",encoding="utf-8") as f:
+    user = json.load(f)
+    print(user)
+    print(type(user))
+```
+
+# 网络机器人(网络爬虫)数据分析
+
+网络机器人: 也称为网络爬虫, 是按照一定的预设规则, 自动浏览并抓取网络数据的程序或脚本
+
+开始  ----------->发送HTTP请求----------------->解析结果提取数据--------------->数据处理(清洗)-------------------->数据存储
+
+## 120—136：网络爬虫
+
+### robots协议
+
+![image-20260819153958044](/home/unitree/.config/Typora/typora-user-images/image-20260819153958044.png)
+
+### 入门程序
+
+requests库: HTTP客户端库, 让Python代码可以发送HTTP请求
+
+```python
+import requests
+
+# 定义url
+target_url = "https://www.tiobe.com/tiobe-index/"
+
+# 发送请求, 获取数据    GET方式而不是POST, 浏览器地址栏发送的请求全都是GET
+response = requests.get(target_url)
+
+# 输出数据到控制台	response是一个对象
+print(response.text)
+```
+
+### 前端网页结构
+
+一个网页是由三个部分组成的，分别是：HTML、CSS、JS（JavaScript）。主要抓取HTML
+
+- HTML：超文本标记语言，由一堆预设的标签（如 `<h1>一级标题</h1>`）构成。HTML负责网页的结构（页面元素和内容）。
+- CSS：层叠样式表。CSS负责网页的表现（页面元素的外观、位置等样式，如颜色、大小等）。
+- JS：全称为JavaScript，简称JS。负责网页的行为（交互效果）。
+
+### 网页解析(Xpath)
+
+网页解析指的是从原始HTML文档中提取数据的过程,也是网络爬虫的关键步骤,从一堆标签文本中提取出需要的数据
+lxml库: 是一个高性能的HTML/XML文档的解析库，支持基于Xpath语法来解析和获取网页数据。
+
+**Xpath**：是一种用于在HTML/XML文档中导航或定位元素的查询语言，让你能够准确地定位文档中的特定元素、属性或文本。
+
+| 表达式            | 描述                         | 样例                |
+| :---------------- | :--------------------------- | :------------------ |
+| `/`               | 从根节点的直接子元素         | `/html/body/div/h1` |
+| `//`              | 从任意位置选择节点           | `//h1`              |
+| `.`               | 当前节点下查找               | `./a 与 ./a`        |
+| `[n]`             | 选择第 n 个元素              | `/p[2]`             |
+| `[last()]`        | 选择最后一个元素             | `/p[last()]`        |
+| `[@attr]`         | 选择有该属性的元素           | `/p[@color]`        |
+| `[@attr='value']` | 选择该属性值等于指定值的元素 | `/p[@color='red']`  |
+| `*`               | 匹配任何元素节点             | `/body/div/*`       |
+| `@*`              | 匹配元素的任何属性           | `/body/div/a/@*`    |
+| `text()`          | 获取文本内容                 | `/div/p/text()`     |
+
+```python
+from lxml import html
+
+
+#读取html文件
+with open("resources/仙逆人物志.html","r",encoding="utf-8") as f:
+    html_text = f.read()
+
+    #解析html的文本, 将其转换为一个文档对象
+    document = html.fromstring(html_text)
+
+    #解析表头
+    # /table/thead/tr/th/text() : 表示从根节点开始匹配
+    # th_list = document.xpath("/html/body/div/div/table/thead/tr/th/text()")
+    # //table/thead/tr/th/text() : 表示从任意位置开始匹配
+
+    th_list = document.xpath("//table/thead/tr/th/text()")
+    print(th_list)      #['姓名', '性别', '头像', '修为', '技能', '身份地位', '师承', '法宝']
+
+    # tr[2] : 表示匹配第2个tr标签
+    td_list = document.xpath("//table/tbody/tr[2]/td/text()")
+    print(td_list)      #['李慕婉', '女', '元婴期', '冰系神通、寒气凝霜', '天逆宗长老', '家族传承', '寒冰玉镯、雪蚕丝袍']
+
+    # last() : 表示匹配最后一个
+    td_list = document.xpath("//table/tbody/tr[last()-1]/td/text()")    #last()-1 : 倒数第二个
+    print(td_list)      #['十三', '男', '筑基初期', '隐匿追踪、暗杀之术', '神秘杀手', '未知', '暗影匕首、隐身符']
+
+    # p[@class] : 表示匹配class的p标签
+    p_list = document.xpath("//p[@class]/text()")
+    print(p_list)       #['探索修真世界的奥秘，记录修仙路上的传奇']
+
+    # p[@class='xn'] : 表示匹配class且属性为xn的p标签
+    p_list = document.xpath("//p[@class='xn']/text()")
+    print(p_list)       #['探索修真世界的奥秘，记录修仙路上的传奇']
+
+    # * : 表示匹配任意标签
+    th_list = document.xpath("//table/thead/tr/*/text()")   #//table/thead/tr下的所有标签
+    print(th_list)      #['姓名', '性别', '头像', '修为', '技能', '身份地位', '师承', '法宝']
+
+    # @src : 表示匹配src属性
+    a_list = document.xpath("//td/img/@src")
+    print(a_list)       #['https://ai-web-2025.oss-cn-beijing.aliyuncs.com/1.png', 'https://ai-web-2025.oss-cn-beijing.aliyuncs.com/1.png',.........
+
+    # @* : 表示匹配任意属性
+    a_list = document.xpath("//td/img/@*")
+    print(a_list)       #['https://ai-web-2025.oss-cn-beijing.aliyuncs.com/1.png', '王林', 'https://ai-web-2025.oss-cn-beijing.aliyuncs.com/1.png', '李慕婉', ............
+```
+
+## 137—158：数据分析
