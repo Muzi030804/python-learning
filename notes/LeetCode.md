@@ -1,5 +1,11 @@
 # Note
 
+## 未见过的方法:
+
+max_s = -inf	表示初始化max_s为负无穷,遇到有负数的题目可以这样初始化
+
+min_s = inf	表示初始化min_s为正无穷,
+
 ## 哈希表
 
 哈希表,可以用字典表示,`if num in dict` 的平均时间复杂度是 `O(1)`。
@@ -304,4 +310,50 @@ class Solution:
 
 下标小于等于 k（起始滑窗长度还不足 k+1）：直接往滑窗加数，即将当前元素加入 Set 中；
 下标大于 k：将上一滑窗的左端点元素 nums[i−k−1] 移除，判断当前滑窗的右端点元素 nums[i] 是否存在 Set 中，若存在，返回 True，否则将当前元素 nums[i] 加入 Set 中。
+
+## 0643_子数组最大平均数 1
+
+给你一个由 `n` 个元素组成的整数数组 `nums` 和一个整数 `k` 。
+
+请你找出平均数最大且 **长度为 `k`** 的连续子数组，并输出该最大平均数。
+
+任何误差小于 `10-5` 的答案都将被视为正确答案。
+
+ 
+
+**示例 1：**
+
+```
+输入：nums = [1,12,-5,-6,50,3], k = 4
+输出：12.75
+解释：最大平均数 (12-5-6+50)/4 = 51/4 = 12.75
+```
+
+**示例 2：**
+
+```
+输入：nums = [5], k = 1
+输出：5.00000
+```
+
+```python
+class Solution:
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        current_sum = 0
+
+        # 先计算第一个完整窗口
+        for i in range(k):
+            current_sum += nums[i]
+
+        max_sum = current_sum
+
+        # 开始滑动窗口
+        for i in range(k, len(nums)):
+            current_sum += nums[i]
+            current_sum -= nums[i - k]
+
+            max_sum = max(max_sum, current_sum)
+
+        return max_sum / k
+```
 

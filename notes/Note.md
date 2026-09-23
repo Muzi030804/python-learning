@@ -591,7 +591,7 @@ print(s[-1:-5:-1])
 #upper()    将字符串中所有字母转换为大写      s.upper()
 #lower()    将字符串中所有字母转换为小写      s.lower()
 #split()    将字符串按指定分隔符分割为列表     s.split(' ')			不传参数的 split() 会自动处理连续空白。
-#strip()    去除字符串两端的空白字符或指定字符   s.trip()/strip('s')   默认空格
+#strip()    去除字符串两端的空白字符或指定字符   s.trip()/strip('s')   默认空格		if message.strip()可以判断是否全为空格
 #replace()  将字符串的指定子串替换为新的子串    s.replace('H','C')
 #startswith()  检查字符串是否以指定子串开头,返回bool值   s.startswith('P')
 #endswith()     检查字符串是否以指定子串结尾,返回bool值   s.endswith('P')
@@ -1039,18 +1039,19 @@ print(dict1["a"])       #100   可以修改
 
 #### 常用操作
 
-| 类型 |          操作           |                    含义                    |         样例         |
-| :--: | :---------------------: | :----------------------------------------: | :------------------: |
-| 添加 |  字典名称[key] = value  |           往指定字典中添加键值对           |   dict1["a"] = 10    |
-| 删除 |    字典名称.pop(key)    | 删除字典中指定的key,并返回该key对应的value | num = dict1.pop("a") |
-| 删除 |   del   字典名称[key]   |              删除指定的键值对              |  del    dict1["a"]   |
-| 修改 | 字典名称[key]  =  value |           修改指定的key对应的值            |   dict1["a"] = 100   |
-| 查询 |      字典名称[key]      |              根据key获取value              |      dict1["a"]      |
-| 查询 |    字典名称.get(key)    |              根据key获取value              |    dict1.get("a")    |
-| 查询 |     字典名称.keys()     |               获取所有的key                |     dict1.keys()     |
-| 查询 |    字典名称.values()    |              获取所有的value               |    dict1.values()    |
-| 查询 |    字典名称.items()     |         获取所有的key-value键值对          |    dict1.items()     |
-| 排序 |    sorted(字典名称)     |             取得字典的键并排序             |    sorted(dict1)     |
+| 类型 |          操作           |                             含义                             |         样例         |
+| :--: | :---------------------: | :----------------------------------------------------------: | :------------------: |
+| 添加 |  字典名称[key] = value  |                    往指定字典中添加键值对                    |   dict1["a"] = 10    |
+| 删除 |    字典名称.pop(key)    |          删除字典中指定的key,并返回该key对应的value          | num = dict1.pop("a") |
+| 删除 |   del   字典名称[key]   |                       删除指定的键值对                       |  del    dict1["a"]   |
+| 修改 | 字典名称[key]  =  value |                    修改指定的key对应的值                     |   dict1["a"] = 100   |
+| 查询 |      字典名称[key]      |                       根据key获取value                       |      dict1["a"]      |
+| 查询 |    字典名称.get(key)    |        根据key获取value,如果这个键不存在，就返回None         |    dict1.get("a")    |
+| 查询 |  字典.get(key, 默认值)  | 如果这个键存在，就返回对应的 value；如果这个键不存在，就返回你指定的默认值。 |    dict1.get(2,0)    |
+| 查询 |     字典名称.keys()     |                        获取所有的key                         |     dict1.keys()     |
+| 查询 |    字典名称.values()    |                       获取所有的value                        |    dict1.values()    |
+| 查询 |    字典名称.items()     |                  获取所有的key-value键值对                   |    dict1.items()     |
+| 排序 |    sorted(字典名称)     |                      取得字典的键并排序                      |    sorted(dict1)     |
 
 ```python
 dict1 = {"a": 1, "b": 2, "c": 3, "d": 4}
@@ -2902,4 +2903,1259 @@ with open("resources/仙逆人物志.html","r",encoding="utf-8") as f:
     print(a_list)       #['https://ai-web-2025.oss-cn-beijing.aliyuncs.com/1.png', '王林', 'https://ai-web-2025.oss-cn-beijing.aliyuncs.com/1.png', '李慕婉', ............
 ```
 
+### csv
+
+```python
+# csv操作 - 方式一:
+# 写
+with open("csv_data/01.csv", "w", encoding="utf-8") as f:
+    f.write("姓名,年龄,性别,爱好\n")
+    f.write("小王,18,男,'football,java'\n")
+    f.write("小李,20,女,Python\n")
+
+# 读
+with open('csv_data/01.csv', 'r', encoding="utf-8") as f:
+    for row in f:
+        print(row.strip())
+
+#csv操作 - 方式二:(推荐)
+import csv
+
+#写
+with open("csv_data/02.csv", "w", newline="") as f:
+    writer = csv.DictWriter(f,fieldnames=["姓名","年龄","性别","爱好"])
+    writer.writeheader()    #写入表头
+    writer.writerow({"姓名":"小王","年龄":18,"性别":"男","爱好":"football,Java"})  #写入数据
+    writer.writerow({"姓名":"小李","年龄":20,"性别":"女","爱好":"Python"})  #写入数据
+
+#读
+with open("csv_data/02.csv","r",encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(row)
+```
+
+### JSON API
+
+### 六个新知识点
+
+```
+params = {"userId": 1}
+```
+
+表示查询参数。就是在网址后面添加?params.  `requests`最终会请求：
+
+```
+https://jsonplaceholder.typicode.com/posts?userId=1
+```
+
+```
+timeout=5
+```
+
+表示最多等待5秒，避免程序一直卡住。
+
+```
+headers = {"Accept": "application/json"}
+```
+
+告诉服务器，希望获得JSON格式的数据。
+
+```
+response.raise_for_status()
+```
+
+检查HTTP状态。404、500等错误状态会触发异常。
+
+```
+posts = response.json()
+```
+
+把JSON响应转换为Python数据。这个接口返回“列表中包含字典”。
+
+```
+except requests.exceptions.RequestException
+```
+
+捕获网络请求中发生的大部分错误。
+
 ## 137—158：数据分析
+
+## 159—174：高级面向对象
+
+### 封装
+
+封装:  把数据（属性）和操作数据的函数（方法）捆绑在一起，形成一个独立的单元（类），并隐藏内部的实现细节，只对外暴露必要的功能（方法）。
+
+私有：私有的属性和方法只能在类的内部使用；Python中并没有真正的私有机制，约定在私有属性和方法名前加_ _（两个下划线）。
+
+```python
+"""
+1.私有属性: 在属性名前加双下划线__
+2. 私有方法: 在方法名前加双下划线__
+
+
+"""
+
+class Car:
+    def __init__(self,brand,model,color,owner):
+        self.brand = brand      #公有属性
+        self.model = model      #公有属性
+        self.color = color      #公有属性
+        self.__owner = owner    #私有属性
+
+    def start(self):
+        print(f"{self.brand} {self.model} 正在启动...")
+
+    def run(self):
+        print(f"{self.brand} {self.model} 正在行驶...")
+
+    def stop(self):
+        print(f"{self.brand} {self.model} 停止行驶...")
+
+    def __control_fuel(self):
+        print(f"{self.brand} {self.model} 正在控制油门...")
+
+    def get_owner(self):    #用公共方法可以调用私有属性
+        return self.__owner[:1] + "**"
+
+if __name__ == '__main__':
+    car = Car("Audi","A6","black",'木梓')
+    print(car.brand)
+    print(car.model)
+    print(car.color)
+
+    # print(car.__owner)    报错:AttributeError: 'Car' object has no attribute '__owner'
+    print(car._Car__owner)  #因为没有真正的私有机制,还是可以调用私有属性
+
+    car.start()
+    car.run()
+    car.stop()
+    # car.__control_fuel()    报错
+    car._Car__control_fuel()    #因为没有真正的私有机制,还是可以调用私有方法
+    print(car.get_owner())
+```
+
+### 继承
+
+继承描述的是两个类之间的关系，子类继承父类，就可以获取到父类的属性和方法。（非私有）
+
+```python
+#继承
+# class Car(Object)  默认继承Object类
+# 私有的属性和方法不能够继承
+class Car:
+    def __init__(self,brand,model,color,owner):
+        self.brand = brand      #公有属性
+        self.model = model      #公有属性
+        self.color = color      #公有属性
+        self.__owner = owner    #私有属性
+
+    def start(self):
+        print(f"{self.brand} {self.model} 正在启动...")
+
+    def run(self):
+        print(f"{self.brand} {self.model} 正在行驶...")
+
+    def stop(self):
+        print(f"{self.brand} {self.model} 停止行驶...")
+
+    def __control_fuel(self):
+        print(f"{self.brand} {self.model} 正在控制油门...")
+
+    def get_owner(self):    #用公共方法可以调用私有属性
+        return self.__owner[:1] + "**"
+
+# 燃油车
+class FuelCar(Car):
+    pass
+
+# 电车
+class ElectricCar(Car):
+    pass
+
+if __name__ == '__main__':
+    c1 = FuelCar("Audi","A6","black",'木梓')
+    c1.start()
+    c1.run()
+    c1.stop()
+    print(c1.brand, c1.model, c1.get_owner(),c1.color)
+```
+
+#### 重写
+
+**重写** 是指子类继承父类后，如果父类中的方法不满足需求，可以在子类中重新定义父类中已有的方法（方法名相同），从而用子类的实现替换父类的实现。
+
+注意：如果子类在重写父类的方法时，需要调用父类的方法，可以通过 **父类名.方法名(self) / super()**. 方法名() 方式来调用。
+
+```python
+#继承(重写)
+# 如果重写时要调用父类方法
+# 方式一: super().方法名()
+# 方式二: 类名.方法名(self)
+class Car:
+    def __init__(self,brand,model,color,owner):
+        self.brand = brand      #公有属性
+        self.model = model      #公有属性
+        self.color = color      #公有属性
+        self.__owner = owner    #私有属性
+
+    def start(self):
+        print(f"{self.brand} {self.model} 正在启动...")
+
+    def run(self):
+        print(f"{self.brand} {self.model} 正在行驶...")
+
+    def stop(self):
+        print(f"{self.brand} {self.model} 停止行驶...")
+
+    def __control_fuel(self):
+        print(f"{self.brand} {self.model} 正在控制油门...")
+
+    def get_owner(self):    #用公共方法可以调用私有属性
+        return self.__owner[:1] + "**"
+
+    def charge(self):
+        print(f"{self.brand} {self.model} 正在补充燃料...")
+
+# 燃油车
+class FuelCar(Car):
+    def charge(self):
+        # 如果重写时要调用父类方法
+        #方式一: super().方法名()
+        super().stop()
+        # 方式二: 类名.方法名(self)
+        Car.stop(self)
+        print(f"{self.brand} {self.model} 正在加油...")
+
+# 电车
+class ElectricCar(Car):
+    pass
+
+if __name__ == '__main__':
+    c1 = FuelCar("Audi","A6","black",'木梓')
+    c1.start()
+    c1.run()
+    c1.stop()
+    print(c1.brand, c1.model, c1.get_owner(),c1.color)
+    c1.charge()
+```
+
+#### 多继承
+
+多继承指的是一个子类，同时继承了多个父类的情况（会将多个父类中的非私有属性和方法都继承下来）。
+
+语法：
+
+```python
+class 子类名(父类名1, 父类名2, 父类名3, ...):
+    代码
+    ...
+```
+
+注意：当一个类继承了多个父类时，默认优先使用第一个父类中的同名属性或方法，可以使用 `类名.__mro__` 属性 或 `类名.mro()` 方法查看调用顺序。
+
+```python
+class Car:
+    def __init__(self,brand,model,color,owner):
+        self.brand = brand      #公有属性
+        self.model = model      #公有属性
+        self.color = color      #公有属性
+        self.__owner = owner    #私有属性
+
+    def start(self):
+        print(f"{self.brand} {self.model} 正在启动...")
+
+    def run(self):
+        print(f"{self.brand} {self.model} 正在行驶...")
+
+    def stop(self):
+        print(f"{self.brand} {self.model} 停止行驶...")
+
+    def __control_fuel(self):
+        print(f"{self.brand} {self.model} 正在控制油门...")
+
+    def get_owner(self):    #用公共方法可以调用私有属性
+        return self.__owner[:1] + "**"
+
+    def charge(self):
+        print(f"{self.brand} {self.model} 正在补充燃料...")
+
+# 智驾
+class AiDrive:
+    """
+    AI 智能驾驶
+    """
+    def __init__(self,version="v1.0"):
+        self.version = version
+
+    def run(self):
+        print(f"使用AI智能驾驶系统{self.version}正在行驶")
+
+# 问界
+class WenjieCar(Car,AiDrive):
+    def __init__(self,brand,model,color,owner,version):
+        Car.__init__(self,brand,model,color,owner)
+        AiDrive.__init__(self,version)
+
+    def run(self):
+        Car.run(self)
+        AiDrive.run(self)
+
+# MRO: Method Resolution Order 方法解析顺序
+if __name__ == '__main__':
+    print(WenjieCar.__mro__)  # 方法解析顺序: (<class '__main__.WenjieCar'>, <class '__main__.Car'>, <class '__main__.AiDrive'>, <class 'object'>)
+    print(WenjieCar.mro())  # 方法解析顺序: [<class '__main__.WenjieCar'>, <class '__main__.Car'>, <class '__main__.AiDrive'>, <class 'object'>]
+    c = WenjieCar("Audi","A6","black",'木梓','1.1')
+    print(c.__dict__)
+
+    c.run()
+    #Audi A6 正在行驶...
+    #使用AI智能驾驶系统1.1正在行驶
+```
+
+### 多态
+
+多态是指同一个方法，具有不同的形态、行为、表现。
+继承负责造不同, 多态负责管理不同
+
+```python
+#多态
+
+class Car:
+    def __init__(self,brand,model,color,owner):
+        self.brand = brand      #公有属性
+        self.model = model      #公有属性
+        self.color = color      #公有属性
+        self.__owner = owner    #私有属性
+
+    def start(self):
+        print(f"{self.brand} {self.model} 正在启动...")
+
+    def run(self):
+        print(f"{self.brand} {self.model} 正在行驶...")
+
+    def stop(self):
+        print(f"{self.brand} {self.model} 停止行驶...")
+
+    def __control_fuel(self):
+        print(f"{self.brand} {self.model} 正在控制油门...")
+
+    def get_owner(self):    #用公共方法可以调用私有属性
+        return self.__owner[:1] + "**"
+
+    def charge(self):
+        print(f"{self.brand} {self.model} 正在补充燃料...")
+
+# 燃油车
+class FuelCar(Car):
+    def charge(self):
+        print(f"{self.brand} {self.model} 正在加油...")
+
+# 电车
+class ElectricCar(Car):
+    def charge(self):
+        print(f"{self.brand} {self.model} 正在充电...")
+
+# 补充燃料函数
+def handle_charge(car: Car):
+    car.charge()
+
+if __name__ == '__main__':
+    handle_charge(FuelCar("Audi","A6","black",'木梓'))        #Audi A6 正在加油...
+    handle_charge(ElectricCar("BYD","汉","black",'木梓'))     #BYD 汉 正在充电...
+```
+
+### 抽象
+
+抽象类: 是一种只能被继承, 不能被直接实例化的类(不能直接创建对象), 作用就是规定子类必须要实现哪些方法, 强制子类必须遵守统一的代码规范
+Python中的抽象类, 需要继承 abc 模块中的 ABC 类 ,ABC: Abstract Base Class
+
+### 综合练习
+
+某社区图书馆需要开发一个简单的图书管理系统。系统需要支持会员登录、图书借阅、图书归还等功能。系统中有两种类型的会员：普通会员和VIP会员，他们的借书权限不同。你需要使用面向对象编程的思想，设计并实现这个图书管理系统。
+核心功能：
+会员登录：会员通过卡号和密码登录系统
+借书：会员可以借阅库存中有余量的图书
+还书：会员可以归还借阅的图书
+查看我的借阅：展示当前会员已经借阅的图书列表
+退出系统
+借阅规则：
+普通会员最多可借3本
+VIP会员最多可借6+VIP等级（VIP等级，默认为1）
+注意：
+登录成功（卡号和密码均正确）后，才可以访问该系统
+图书库存不足，或当前会员借书数量达到最大借书数量，不能再借新书
+
+```python
+from abc import ABC, abstractmethod
+import json
+
+class Book:
+    def __init__(self,book_id,title,author,total_num):
+        self.book_id = book_id
+        self.title = title
+        self.author = author
+        self.total_num = total_num
+        self.__available_num = total_num
+
+    def borrow_book(self):  #借阅书籍
+        if self.__available_num > 0:
+            self.__available_num -= 1
+            return True
+        return False
+
+    def return_book(self):  # 归还书籍
+        self.__available_num += 1
+        return True
+
+    def get_available_num(self):    #获取可用数量
+        return self.__available_num
+
+# 抽象类: 是一种只能被继承, 不能被直接实例化的类(不能直接创建对象), 作用就是规定子类必须要实现哪些方法, 强制子类必须遵守统一的代码规范
+# Python中的抽象类, 需要继承 abc 模块中的 ABC 类 ,ABC: Abstract Base Class
+# 会员类
+class Member(ABC):
+    def __init__(self, card_id, name, password):
+        self.name = name
+        self.card_id = card_id
+        self.__password = password
+        self.__borrowed_books = []
+
+    def borrow_book(self, book: Book):
+        # 借阅数量是否达到限制
+        if len(self.__borrowed_books) >= self.get_max_books():
+            print("借阅数量达到限制")
+            return False
+
+        # 判断书籍是否可借
+        if book.borrow_book():
+            self.__borrowed_books.append(book)
+            print(f"{self.name} borrowed book {book.title}")
+            return True
+        else:
+            print(f"借阅失败: 图书{book.title}已被借完")
+            return False
+
+    def return_book(self,book: Book):
+        if book in self.__borrowed_books:
+            book.return_book()
+            self.__borrowed_books.remove(book)
+            print(f"{self.name} returned book {book.title}")
+        else:
+            print(f"归还失败,没有借阅该书籍{book.title}")
+
+    def get_password(self):
+        return self.__password
+    def get_borrowed_books(self):
+        return self.__borrowed_books
+
+    # 获取会员最大借阅数量
+    @abstractmethod
+    def get_max_books(self) -> int:
+        pass
+
+class NormalMember(Member):
+    def get_max_books(self) -> int:
+        return 3
+
+class VIPMember(Member):
+    def __init__(self,card_id,name,password,vip_level):
+        self.vip_level = vip_level
+        super().__init__(card_id,name,password)
+
+    def get_max_books(self) -> int:
+        return self.vip_level + 6
+
+# 图书馆管理系统
+class LibrarySystem:
+    def __init__(self):
+        self.books = {}
+        self.members = {}
+        self.current_member: Member | None = None
+        # 加载数据
+        self.load_books_data()
+        self.load_members_data()
+
+    def load_books_data(self):
+        with open("data/books.json", "r", encoding="utf-8") as f:
+            books_data = json.load(f)
+            for book in books_data:
+                self.books[book["编号"]] = Book(book["编号"],book["标题"],book["作者"],book["数量"])
+            print("加载书籍数据成功")
+
+
+
+    def load_members_data(self):
+        with open("data/members.json", "r", encoding="utf-8") as f:
+            members_data = json.load(f)
+            for member in members_data:
+                if member['卡号'].startswith("N"):
+                    self.members[member['卡号']] = NormalMember(member['卡号'],member['姓名'],member['密码'])
+                elif member['卡号'].startswith("V"):
+                    self.members[member['卡号']] = VIPMember(member['卡号'],member['姓名'],member['密码'],member['会员等级'])
+            print("会员数据加载完成")
+
+    # 登录
+    def login(self):
+        while True:
+            print("[登录]")
+            member_id = input("请输入会员卡号:")
+            password = input("请输入会员密码:")
+
+            # 判断卡号是否存在
+            if member_id not in self.members:
+                print("登录失败,卡号不存在")
+                continue
+
+            # 判断密码是否正确
+            member = self.members[member_id]
+            if member.get_password() == password:
+                print("登陆成功")
+                self.current_member = member
+                return True
+            else:
+                print("登录失败,密码错误")
+                continue
+
+    def borrow_book(self):
+        # 展示图书列表
+        for book in self.books.values():
+            print(f"编号:{book.book_id},标题:{book.title},作者:{book.author},总数:{book.total_num},可用:{book.get_available_num()}")
+
+        #获取用户输入的图书编号,执行结束操作
+        book_id = input("请输入要借阅的图书编号")
+        if book_id not in self.books:
+            print("图书不存在")
+            return
+        self.current_member.borrow_book(self.books[book_id])
+        #
+    def return_book(self):
+        # 展示出当前会员的借阅列表
+        borrowed_books = self.current_member.get_borrowed_books()
+        print("借阅的书籍如下:")
+        for book in borrowed_books:
+            print(f"编号:{book.book_id},标题:{book.title}")
+        # 获取用户输入的图书编号,执行还书操作
+        book_id = input("请输入要归还的图书编号")
+        if book_id not in self.books:
+            print("还书失败,编号不存在")
+            return
+        self.current_member.return_book(self.books[book_id])
+
+    def show_borrowed_books(self):
+        borrowed_books = self.current_member.get_borrowed_books()
+        if len(borrowed_books) > 0:
+            print("已借阅的书籍如下:")
+            for book in borrowed_books:
+                print(f"编号:{book.book_id},标题:{book.title}")
+        else:
+            print("当前没有借阅任何图书")
+
+
+
+    def run(self):
+        if self.login():
+            while True:
+                print("\n1. 借阅")
+                print("2. 归还")
+                print("3. 查看")
+                print("4. 退出")
+
+                choice = input("请选择操作1-4")
+                match choice:
+                    case "1":
+                        self.borrow_book()
+                    case "2":
+                        self.return_book()
+                    case "3":
+                        self.show_borrowed_books()
+                    case "4":
+                        print("退出系统")
+                        break
+                    case _:
+                        print("无效的选项,请重新选择")
+
+if __name__ == '__main__':
+    lib = LibrarySystem()
+    lib.run()
+```
+
+# FastAPI
+
+FastAPI是一个现代、快速、高性能的Python Web框架，用来构建API接口服务
+
+使用步骤：
+
+1. 导入FastAPI
+
+2. 创建FastAPI实例对象
+
+3. 创建路径操作函数，定义访问路径
+
+4. 运行FastAPI服务
+
+   ```
+   fastapi dev "xxx.py"
+   或者
+   uvicorn xxxx:app --reload 
+   reload表示热重载,每次更改代码都会自动重启服务
+   不过更推荐在代码中写启动服务
+   ```
+
+```python
+from fastapi import FastAPI
+
+# 创建FastAPI实例对象
+app = FastAPI()
+
+# 定义API接口, 该函数的返回值表示 API接口 的返回的数据, 接口访问路径为 / ,请求方式为GET
+@app.get("/")
+def root():
+    return {"message": "Hello World"}
+
+# 定义API接口
+@app.get("/users")
+def get_users():
+    return [
+        {"name": "Michael", "age": 25},
+        {"name": "Ben", "age": 30},
+        {"name": "Sarah", "age": 40},
+    ]
+
+# 启动服务: uvicorn: Python中的轻量级Web服务器
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+```
+
+## 基础
+
+### Restful
+
+Restful指的是遵循REST架构风格的API接口服务，而REST（Representational State Transfer），表述性状态转换，它是一种软件架构风格。
+
+| REST风格url                     | 请求方式 | 含义            | 备注             |
+| :------------------------------ | :------- | :-------------- | :--------------- |
+| `http://localhost:8000/users/1` | GET      | 查询id为1的用户 | URL定位资源      |
+| `http://localhost:8000/users/1` | DELETE   | 删除id为1的用户 | HTTP动词描述操作 |
+| `http://localhost:8000/users`   | POST     | 新增用户        | 简洁、规范、优雅 |
+| `http://localhost:8000/users`   | PUT      | 修改用户        |                  |
+
+**注意：**
+
+- REST是风格，是约定方式，约定不是规定，可以打破。
+- 描述功能模块通常使用复数形式（加s），表示此类资源，而非单个资源。如：users、books、items。
+
+### 路由
+
+路由就是 URL 地址和处理函数之间的映射关系，它决定了当用户访问某个特定网址时，服务器应该执行哪段代码来返回结果。
+
+### 路径参数与查询参数
+
+#### 1. 路径参数 Path Parameter
+
+路径参数是直接写在 URL 路径中的参数。
+
+```python
+@app.get("/user/{name}")
+async def get_user_name(
+    name: str = Path(..., min_length=2, max_length=10)
+):
+    return {"名字是": name}
+```
+
+请求示例：
+
+```text
+/user/zhangsan
+```
+
+其中：
+
+```text
+zhangsan
+```
+
+就是 `name` 的值。
+
+FastAPI 判断规则：
+
+```python
+@app.get("/user/{name}")
+```
+
+只要参数出现在路由的 `{}` 中，它就是路径参数。
+
+例如：
+
+```python
+@app.get("/news/{news_id}")
+async def get_news(news_id: int):
+    return {"news_id": news_id}
+```
+
+请求：
+
+```text
+/news/100
+```
+
+得到：
+
+```python
+news_id = 100
+```
+
+------
+
+#### 2. Path()
+
+`Path()` 用于给路径参数添加校验规则。
+
+```python
+name: str = Path(..., min_length=2, max_length=10)
+```
+
+含义：
+
+```text
+name 必须是字符串
+最少 2 个字符
+最多 10 个字符
+```
+
+其中：
+
+```python
+...
+```
+
+表示该参数必填。
+
+------
+
+#### 3. 查询参数 Query Parameter
+
+查询参数写在 URL 的 `?` 后面。
+
+```python
+@app.get("/news/news_list")
+async def get_news_list(skip: int = 0, limit: int = 100):
+    return {"skip": skip, "limit": limit}
+```
+
+请求：
+
+```text
+/news/news_list?skip=10&limit=20
+```
+
+FastAPI 得到：
+
+```python
+skip = 10
+limit = 20
+```
+
+查询参数格式：
+
+```text
+URL?参数1=值1&参数2=值2
+```
+
+例如：
+
+```text
+/news?keyword=robot&page=2
+```
+
+其中：
+
+```text
+keyword=robot
+page=2
+```
+
+都是查询参数。
+
+------
+
+#### 4. FastAPI 如何判断查询参数
+
+如果函数参数：
+
+```python
+async def get_news_list(skip: int = 0):
+```
+
+没有出现在：
+
+```python
+@app.get("/news/news_list")
+```
+
+的 `{}` 中，那么通常会被 FastAPI 当作查询参数。
+
+例如：
+
+```python
+@app.get("/news")
+async def get_news(page: int = 1):
+    pass
+```
+
+请求：
+
+```text
+/news?page=2
+```
+
+这里 `page` 是查询参数。
+
+------
+
+#### 5. Query()
+
+`Query()` 用于给查询参数添加校验规则。
+
+```python
+from fastapi import Query
+
+@app.get("/news")
+async def get_news(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=100)
+):
+    return {"skip": skip, "limit": limit}
+```
+
+含义：
+
+```text
+skip >= 0
+
+1 <= limit <= 100
+```
+
+其中：
+
+```text
+ge = greater than or equal
+le = less than or equal
+```
+
+------
+
+#### 6.常用参数注解:
+
+| 参数          | 作用           | 示例                       | 含义                     |
+| ------------- | -------------- | -------------------------- | ------------------------ |
+| `...`         | 必填           | `Path(...)`                | 参数必须提供             |
+| `default`     | 默认值         | `Query(0)`                 | 未传参数时使用默认值     |
+| `gt`          | 大于           | `gt=0`                     | `x > 0`                  |
+| `ge`          | 大于等于       | `ge=0`                     | `x >= 0`                 |
+| `lt`          | 小于           | `lt=100`                   | `x < 100`                |
+| `le`          | 小于等于       | `le=100`                   | `x <= 100`               |
+| `min_length`  | 最小长度       | `min_length=2`             | 字符串至少 2 个字符      |
+| `max_length`  | 最大长度       | `max_length=10`            | 字符串最多 10 个字符     |
+| `pattern`     | 正则表达式限制 | `pattern="^[a-z]+$"`       | 必须符合指定格式         |
+| `title`       | 参数标题       | `title="用户ID"`           | 用于 API 文档显示        |
+| `description` | 参数描述       | `description="用户唯一ID"` | Swagger 文档中的说明     |
+| `alias`       | 参数别名       | `alias="user-id"`          | 请求中使用另一个参数名   |
+| `deprecated`  | 标记废弃       | `deprecated=True`          | API 文档显示该参数已废弃 |
+| `examples`    | 示例值         | `examples=["Tom"]`         | API 文档中显示示例       |
+
+------
+
+#### 
+
+#### 7. Path 和 Query 的区别
+
+| 类型     | URL 示例                | 作用                   |
+| -------- | ----------------------- | ---------------------- |
+| 路径参数 | `/user/zhangsan`        | 定位具体资源           |
+| 查询参数 | `/news?page=2&limit=10` | 查询、筛选、分页、排序 |
+
+路径参数：
+
+```text
+/user/{name}
+```
+
+查询参数：
+
+```text
+/news?skip=10&limit=20
+```
+
+------
+
+#### 8. 两种参数可以同时使用
+
+```python
+@app.get("/user/{user_id}/news")
+async def get_user_news(
+    user_id: int,
+    skip: int = 0,
+    limit: int = 10
+):
+    return {
+        "user_id": user_id,
+        "skip": skip,
+        "limit": limit
+    }
+```
+
+请求：
+
+```text
+/user/1001/news?skip=10&limit=20
+```
+
+对应：
+
+```python
+user_id = 1001   # 路径参数
+skip = 10        # 查询参数
+limit = 20       # 查询参数
+```
+
+------
+
+#### 核心规则
+
+```text
+出现在 URL 路径 {} 中
+→ 路径参数 Path Parameter
+
+出现在 URL ? 后面
+→ 查询参数 Query Parameter
+```
+
+FastAPI 中常见写法：
+
+```python
+Path(...)
+```
+
+用于路径参数校验。
+
+```python
+Query(...)
+```
+
+用于查询参数校验。
+
+### 请求体
+
+在HTTP协议中，一个完整的请求由三部分组成：
+① 请求行：包含方法、URL、协议版本
+② 请求头：元数据信息（Content-Type、Authorization等）
+③ 请求体：实际要发送的数据内容
+
+位置：HTTP 请求的消息体 (body) 中
+
+作用：创建、更新资源，携带大量数据，如：JSON
+
+方法：POST、PUT 等
+
+```python
+# 注册: 用户名和密码 ->str
+class User(BaseModel):
+    username: str
+    password: str
+
+# 需求: 设计接口新增图书,图书信息包含: 书名,作者,出版社,售价
+
+class Book(BaseModel):
+    book_name: str
+    book_author: str
+    book_publication: str
+    book_price: int
+
+@app.post("/book")
+async def create_book(book: Book):
+    return book
+
+@app.post("/register")
+async def register_user(user: User):
+    return user
+```
+
+#### 请求体参数  Field Parameter
+
+参数注解和Path,Query几乎一致
+
+```python
+"""
+需求: 设计接口新增图书,图书信息包含: 书名,作者,出版社,售价
+具体要求如下:
+书名：不能为空；长度 2 ~ 20
+作者：长度 2 ~ 10
+出版社：默认值“黑马出版社”
+售价：不能为空；价格大于0元
+"""
+
+class Book(BaseModel):
+    book_name: str = Field(...,min_length=2,max_length=20)
+    book_author: str = Field(min_length=2,max_length=10)
+    book_publication: str = Field(default="出版社")
+    book_price: int = Field(...,gt=0)
+```
+
+### 响应类型
+
+默认情况下，FastAPI 会**自动**将路径操作函数返回的 **Python 对象**（字典、列表、Pydantic 模型等），经由 jsonable_encoder 转换为 JSON 兼容格式，并包装为 JSONResponse 返回。这省去了手动序列化的步骤，让开发者能更专注于业务逻辑。
+
+如果需要返回非 JSON 数据（如 HTML、文件流），FastAPI 提供了丰富的响应类型来返回不同数据。
+
+| 响应类型            | 用途                   | 示例                                |
+| :------------------ | :--------------------- | :---------------------------------- |
+| `JSONResponse`      | 默认响应，返回JSON数据 | `return {"key": "value"}`           |
+| `HTMLResponse`      | 返回HTML内容           | `return HTMLResponse(html_content)` |
+| `PlainTextResponse` | 返回纯文本             | `return PlainTextResponse("text")`  |
+| `FileResponse`      | 返回文件下载           | `return FileResponse(path)`         |
+| `StreamingResponse` | 流式响应               | 生成器函数返回数据                  |
+| `RedirectResponse`  | 重定向                 | `return RedirectResponse(url)`      |
+
+常用的响应类型有: JSONResponse , HTMLResponse , FileResponse
+
+```python
+# 两种使用响应类型的方式
+
+# 接口 : 响应 HTML 代码 (直接在装饰器中指定响应类的方式)
+@app.get("/html", response_class=HTMLResponse)
+async def get_html():
+    return "<h1>Hello World(一级标题)</h1>"
+
+# 接口 : 返回图片内容 (采用返回对象的方式)
+@app.get("/file")
+async def get_file():
+    path = "../06_streamlit_chat/resources/cat.jpg"
+    return FileResponse(path)  # 采用返回对象的方式
+```
+
+#### 自定义响应数据格式
+
+`response_model` 是路径操作装饰器（如 `@app.get` 或 `@app.post`）的关键参数，它通过一个 Pydantic 模型来严格定义和约束 API 端点的输出格式。这一机制在提供自动数据验证和序列化的同时，更是保障数据安全性的第一道防线。
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+class News(BaseModel):
+    id: int
+    title: str
+    content: str
+
+@app.get("/news/{id}", response_model=News) # 如果return 的数据格式不是News,Pycharm中会报错
+async def get_news(id: int):
+    return {
+        "id": id,
+        "title": f"这是第{id}本书",
+        "content": "这是一本书"
+    }
+```
+
+### 异常处理
+
+对于客户端引发的错误（4xx，如资源未找到、认证失败），应使用 fastapi.HTTPException 来中断正常处理流程，并返回标准错误响应。
+
+```python
+from fastapi import FastAPI,HTTPException
+app = FastAPI()
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
+# 需求: 按id查询新闻
+@app.get("/news/{id}")
+async def get_news(id: int):
+    id_list = [1,2,3,4,5,6]
+    if id not in id_list:
+        raise HTTPException(status_code=404, detail="当前新闻不存在")
+    return {"id":id}
+```
+
+## 进阶
+
+### 中间件
+
+中间件（Middleware）是一个在**每次请求**进入 FastAPI 应用时都会被执行的函数。
+
+它在请求到达实际的路径操作（路由处理函数）之前运行，并且在响应返回给客户端之前再运行一次。
+
+函数的顶部使用装饰器  @app.middleware("http")
+
+中间件的执行顺序是自底向上的,先执行下面的,再执行上面的
+
+```
+中间件的作用
+
+用于处理多个接口共同需要的逻辑。
+
+常见用途：
+
+日志记录
+接口耗时统计
+身份认证
+CORS 跨域
+统一响应头
+限流
+安全检查
+```
+
+
+
+```python
+from  fastapi import FastAPI
+
+app = FastAPI()
+
+@app.middleware("http")
+async def middleware(request,call_next):
+    print("中间件1开始")
+    response = await call_next(request)
+    print("中间件1结束")
+    return response
+
+@app.middleware("http")
+async def middleware2(request,call_next):
+    print("中间件2开始")
+    response = await call_next(request)
+    print("中间件2结束")
+    return response
+
+
+
+
+@app.get("/")
+async def root():
+    return {"message":"Hello World"}
+```
+
+先执行中间件2再执行中间件1
+
+#### request 和 call_next
+
+```tex
+1. request
+
+request 表示当前这一次 HTTP 请求。
+
+包含：
+
+请求方式
+请求地址
+请求头
+查询参数
+Cookie 等信息
+
+例如：
+
+request.method
+request.url
+request.headers
+
+
+2. call_next
+
+call_next 是 FastAPI / Starlette 提供的函数。
+
+作用：
+
+把当前 request 继续传给后面的中间件或路由函数。
+
+基本写法：
+
+response = await call_next(request)
+
+return response
+
+
+3. call_next 的执行过程
+
+当前中间件
+    ↓
+call_next(request)
+    ↓
+后面的中间件
+    ↓
+路由函数
+    ↓
+生成 Response
+    ↓
+返回当前中间件
+
+
+4. call_next 不仅传递请求
+
+它还会等待后面的处理完成，
+并得到返回的 Response。
+
+例如：
+
+response = await call_next(request)
+```
+
+### 依赖注入
+
+使用依赖注入系统来共享通用逻辑，避免代码重复
+
+依赖项：可重用的组件（函数/类），负责提供某种功能或数据。
+注入：FastAPI 自动帮你调用依赖项，并将结果"注入"到路径操作函数中。
+
+优点：
+
+➢ 代码复用：一次编写，多处使用
+➢ 解耦：业务逻辑与基础设施代码分离
+➢ 易于测试：轻松地用模拟依赖替换真实依赖进行测试
+
+使用步骤: 创建依赖项 → 导入 Depends → 声明依赖项
+
+```python
+from fastapi import FastAPI, Query, Depends
+
+app = FastAPI()
+
+@app.get("/")
+async def root():
+    return {"message":"Hello World"}
+
+
+# 分页参数逻辑共用: 新闻列表和用户列表
+# 1. 创建依赖项
+async def common_parameters(
+        skip: int = Query(0, ge=0),
+        limit: int = Query(100, le=100),
+):
+    return {"skip":skip,"limit":limit}
+
+# 2. 导入Depends
+
+# 3. 声明依赖项 -> 依赖注入
+@app.get("/news/news_list")
+async def get_news_list(commons = Depends(common_parameters)):
+    return commons
+
+@app.get("/user/user_list")
+async def get_user_list(commons = Depends(common_parameters)):
+    return commons
+```
+
+### ORM
+
+ORM（Object-RelationalMapping，对象关系映射）是一种编程技术，用于在面向对象编程语言和关系型数据库之间建立映射。它允许开发者通过操作对象的方式与数据库进行交互，而无需直接编写复杂的SQL语句。
+
+优势：
+
+➢ 减少重复的 SQL 代码
+➢ 代码更简洁易读
+➢ 自动处理数据库连接和事务
+➢ 自动防止 SQL 注入攻击
